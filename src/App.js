@@ -8,6 +8,7 @@ import Maj from './Composants/Maj/Maj';
 import Comptes from './Composants/Comptes/Comptes';
 import GestionFactures from './Composants/GestionFactures/GestionFactures';
 import Etats from './Composants/Etats/Etats';
+import Stats from './Composants/Stats/Stats.jsx';
 
 
 function App() {
@@ -48,8 +49,13 @@ function App() {
       break;
     case 5:
       contenu = <GestionFactures nomConnecte={nomConnecte} />
+      break;
     case 6:
       contenu = <Etats nomConnecte={nomConnecte} role={role} />
+      break;
+    case 7:
+      contenu = <Stats nomConnecte={nomConnecte} />
+      break;
   }
 
   if (connecter && date_jour.getTime() < date_e.getTime()) {
@@ -58,11 +64,12 @@ function App() {
         <main className='app'>
           <Entete nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
           <section className="conteneur-onglets">
-            <div className="onglets-blocs" style={{width: '75%'}}>
+            <div className="onglets-blocs" style={{width: '85%'}}>
               <div className={`tab ${onglet === 6 ? 'active' : ''}`} onClick={ () => {setOnglet(6)}}>Etats</div>
               <div className={`tab ${onglet === 2 ? 'active' : ''}`} onClick={ () => {setOnglet(2)}}>Inventaires</div>
               <div className={`tab ${onglet === 3 ? 'active' : ''}`} onClick={ () => {setOnglet(3)}}>Gestion des stocks</div>
               <div className={`tab ${onglet === 4 ? 'active' : ''}`} onClick={ () => {setOnglet(4)}}>Comptes</div>
+              <div className={`tab ${onglet === 7 ? 'active' : ''}`} onClick={ () => {setOnglet(7)}}>Statistiques</div>
             </div>
             <div className="onglets-contenu">
                 {contenu}
