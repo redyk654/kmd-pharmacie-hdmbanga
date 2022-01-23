@@ -44,6 +44,7 @@ export default function Comptes(props) {
     const [modalConfirmation, setModalConfirmation] = useState(false);
     const [modalReussi, setModalReussi] = useState(false);
     const [reussi, setReussi] = useState('supp');
+    const [messageErreur, setMessageErreur] = useState('');
 
     const { nom, mdp, confirmation } = nvCompte;
 
@@ -60,6 +61,11 @@ export default function Comptes(props) {
                 result = result.filter(item => (item.nom_user != props.nomConnecte))
                 setListeComptes(result);
             }
+        });
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
         });
 
         req.send();
@@ -138,6 +144,11 @@ export default function Comptes(props) {
                 setModalReussi(true);
             })
 
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
+            });
+
             req.send(data);
             
 
@@ -168,6 +179,11 @@ export default function Comptes(props) {
             }
         });
 
+        req1.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
+
         req1.send();
 
         // Récupération de la recette en cours du vendeur selectionné
@@ -191,7 +207,12 @@ export default function Comptes(props) {
                 setRecetteJour(result);
                 setCompteSelectionne(e.target.id);
             }
-        })
+        });
+
+        req2.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
     }
 
     const enregisterRecette = () => {
@@ -209,7 +230,12 @@ export default function Comptes(props) {
             if (req.status >= 200 && req.status < 400) {
                 setModalReussi(true);
             }
-        })
+        });
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
 
         req.send(data);
     }
@@ -231,7 +257,13 @@ export default function Comptes(props) {
                     setReussi('supp');
                     setModalReussi(true);
                 }
-            })
+            });
+
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
+            });
+
             req.send();
         }
     }
@@ -275,6 +307,7 @@ export default function Comptes(props) {
                 )}
             </Modal>
             <h1>Gestions des comptes</h1>
+            <div className='erreur-message'>{messageErreur}</div>
             <div className="container-gestion">
                 <div className="box-1">
                     <h1>Comptes</h1>

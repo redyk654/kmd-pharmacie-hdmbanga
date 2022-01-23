@@ -51,6 +51,7 @@ export default function Historique(props) {
     const [stockPhy, setStockPhy] = useState('');
     const [modalConfirmation, setModalConfirmation] = useState(false);
     const [state, setState] = useState(false);
+    const [messageErreur, setMessageErreur] = useState('');
 
 
     useEffect(() => {
@@ -67,6 +68,11 @@ export default function Historique(props) {
         });
 
         req.send();
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
 
     }, [state]);
 
@@ -88,6 +94,11 @@ export default function Historique(props) {
                 fermerModalConfirmation();
                 setMedocSelectionne(false);
                 setState(!state);
+            });
+
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
             });
     
             req.send(data);
@@ -181,6 +192,11 @@ export default function Historique(props) {
             }
         });
 
+        req1.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
+
         req1.send(data1);
     }
 
@@ -267,6 +283,7 @@ export default function Historique(props) {
                 </div>
             </Modal>
             <h1>Inventaires des produits</h1>
+            <div className='erreur-message'>{messageErreur}</div>
             <div className="container-historique">
                 <div className="medocs-sortis">
                     <p className="search-zone">

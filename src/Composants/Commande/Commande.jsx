@@ -75,6 +75,7 @@ export default function Commande(props) {
     const componentRef = useRef();
     const assuranceDefaut = 'aucune';
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
+    let interval = null;
 
     const [listeMedoc, setListeMedoc] = useState([]);
     const [listeMedocSauvegarde, setListeMedocSauvegarde] = useState([]);
@@ -108,29 +109,8 @@ export default function Commande(props) {
     useEffect(() => {
         startChargement();
         // Récupération des médicaments dans la base via une requête Ajax
-        const req = new XMLHttpRequest()
-        req.open('GET', 'http://serveur/backend-cma/recuperer_medoc.php');
-        req.addEventListener("load", () => {
-            if (req.status >= 200 && req.status < 400) { // Le serveur a réussi à traiter la requête
-                const result = JSON.parse(req.responseText);
-
-                // Mise à jour de la liste de médicament et sauvegarde de la même liste pour la gestion du filtrage de médicament
-                setListeMedoc(result);
-                setListeMedocSauvegarde(result);
-                stopChargement();
-
-            } else {
-                // Affichage des informations sur l'échec du traitement de la requête
-                console.error(req.status + " " + req.statusText);
-            }
-        });
-        req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            console.error("Erreur réseau");
-        });
-
-        req.send();
-    }, [actualiserQte])
+        fetchProduits();
+    }, []);
 
     useEffect(() => {
         /* Hook exécuter lors de la mise à jour de la liste de médicaments commandés,
@@ -209,6 +189,33 @@ export default function Commande(props) {
         setStatePourRerender(!statePourRerender);
     }, [assurance]);
 
+    const fetchProduits = () => {
+        // Récupération des médicaments dans la base via une requête Ajax
+        const req = new XMLHttpRequest();
+        req.open('GET', 'http://serveur/backend-cma/recuperer_medoc.php');
+        req.addEventListener("load", () => {
+            if (req.status >= 200 && req.status < 400) { // Le serveur a réussi à traiter la requête
+                setMessageErreur('');
+                const result = JSON.parse(req.responseText);
+
+                // Mise à jour de la liste de médicament et sauvegarde de la même liste pour la gestion du filtrage de médicament
+                setListeMedoc(result);
+                setListeMedocSauvegarde(result);
+                stopChargement();
+
+            } else {
+                // Affichage des informations sur l'échec du traitement de la requête
+                console.error(req.status + " " + req.statusText);
+            }
+        });
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
+
+        req.send();
+    } 
+
     // permet de récolter les informations sur le médicament sélectioné
     const afficherInfos = (e) => {
         const medocSelectionne = listeMedoc.filter(item => (item.id == e.target.value));
@@ -238,6 +245,7 @@ export default function Commande(props) {
             - Mise à jour de la quantité total des médicaments commandés
             - Mise à jour du prix total de la commande
         */
+
         if (qteDesire && !isNaN(qteDesire) && medocSelect) {
 
             if (parseInt(qteDesire) > medocSelect[0].en_stock) {
@@ -245,7 +253,6 @@ export default function Commande(props) {
             } else if (medocSelect[0].en_stock == 0) {
                 setMessageErreur('Le stock de' + medocSelect[0].designation + ' est épuisé')
             } else {
-
                 setMessageErreur('');
                 Object.defineProperty(medocSelect[0], 'qte_commander', {
                     value: qteDesire,
@@ -308,6 +315,15 @@ export default function Commande(props) {
         const req = new XMLHttpRequest();
         req.open('POST', 'http://serveur/backend-cma/backup.php');
         req.send();
+
+        req.addEventListener('load', () => {
+            setMessageErreur('');
+        })
+
+        // req.addEventListener("error", function () {
+        //     // La requête n'a pas réussi à atteindre le serveur
+        //     setMessageErreur('Erreur réseau');
+        // });
     }
 
     const idUnique = () => {
@@ -340,9 +356,6 @@ export default function Commande(props) {
         req.open('POST', 'http://serveur/backend-cma/factures_pharmacie.php');
 
         req.addEventListener('load', () => {
-            // setTimeout(() => {
-            //     setActualiserQte(!actualiserQte);
-            // }, 40000);
             setMedoSelect(false);
             setMessageErreur('');
             // Activation de la fenêtre modale qui indique la réussite de la commmande
@@ -350,6 +363,11 @@ export default function Commande(props) {
             // Désactivation de la fenêtre modale de confirmation
             setModalConfirmation(false);
             annulerCommande();
+        });
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
         });
 
         req.send(data);
@@ -363,6 +381,16 @@ export default function Commande(props) {
         req.open('POST', 'http://serveur/backend-cma/data_assurance.php');
 
         req.send(data);
+
+        req.addEventListener("load", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('');
+        });
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
     }
 
     const validerCommande = () => {
@@ -411,6 +439,7 @@ export default function Commande(props) {
                 // Une fois la requête charger on vide tout les états
                 req2.addEventListener('load', () => {
                     if (req2.status >= 200 && req2.status < 400) {
+                        setMessageErreur('');
                         listeMedoc.map(item2 => {
                             if (item2.id == item.id) {
                                 Object.defineProperty(item2, 'en_stock', {
@@ -425,6 +454,11 @@ export default function Commande(props) {
                             enregisterFacture(id);
                         }
                     }
+                });
+
+                req2.addEventListener("error", function () {
+                    // La requête n'a pas réussi à atteindre le serveur
+                    setMessageErreur('Erreur réseau');
                 });
                 req2.send(data2);
             });
@@ -473,12 +507,18 @@ export default function Commande(props) {
         req.open('GET', 'http://serveur/backend-cma/gestion_patients.php');
 
         req.addEventListener('load', () => {
+            setMessageErreur('');
             const result = JSON.parse(req.responseText);
             setlistePatient(result);
             setlistePatientSauvegarde(result);
         })
 
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
+        });
         req.send();
+
     }
 
     const filtrerPatient = (e) => {
@@ -523,6 +563,16 @@ export default function Commande(props) {
                 
                 const req = new XMLHttpRequest();
                 req.open('POST', 'http://serveur/backend-cma/gestion_patients.php');
+
+                req.addEventListener("load", function () {
+                    // La requête n'a pas réussi à atteindre le serveur
+                    setMessageErreur('');
+                });
+
+                req.addEventListener("error", function () {
+                    // La requête n'a pas réussi à atteindre le serveur
+                    setMessageErreur('Erreur réseau');
+                });
     
                 req.send(data);
             }
@@ -688,7 +738,7 @@ export default function Commande(props) {
                             Net à payer : <span style={{color: "#0e771a", fontWeight: "600"}}>{qtePrixTotal.a_payer ? qtePrixTotal.a_payer + ' Fcfa': 0 + ' Fcfa'}</span>
                         </div>
                         <button onClick={annulerCommande}>Annnuler</button>
-                        <button onClick={() => { if(medocCommandes.length > 0 && nomPatient) {setModalConfirmation(true)}}}>Valider</button>
+                        <button onClick={() => { if(medocCommandes.length > 0 && nomPatient) {setModalConfirmation(true)} else {setMessageErreur("Entrez le nom et le prénom du patient")}}}>Valider</button>
 
                     </div>
                     <div>

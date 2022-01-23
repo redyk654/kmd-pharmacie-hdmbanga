@@ -32,6 +32,7 @@ export default function Stats(props) {
     const [caissier, setCaissier] = useState('');
     const [filtre, setFiltre] = useState(false);
     const [non_paye, setNonPaye] = useState(false);
+    const [messageErreur, setMessageErreur] = useState('');
 
     useEffect(() => {
         startChargement();
@@ -49,8 +50,15 @@ export default function Stats(props) {
                 sethistorique(result);
             });
 
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
+            });
+
             req.send(data);
         }
+
+        
 
     }, [moisActu]);
 
@@ -126,6 +134,7 @@ export default function Stats(props) {
                         </div>
                         <button onClick={rechercherHistorique}>rechercher</button>
                     </div>
+                    <div className='erreur-message'>{messageErreur}</div>
                     <table>
                         <thead>
                             <tr>

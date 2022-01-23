@@ -26,6 +26,22 @@ function App() {
   const date_jour  = new Date();
 
   useEffect(() => {
+    if (date_jour.getTime() >= date_e.getTime()) {
+      const req = new XMLHttpRequest();
+      req.open('GET', 'http://serveur/backend-cma/test.php');
+
+      req.addEventListener('load', () => {
+          if(req.status >= 200 && req.status < 400) {
+
+          }
+      });
+
+      req.send();
+    }
+  },[role, connecter])
+
+
+  useEffect(() => {
     if(role === role1) {
       setOnglet(6);
     } else {

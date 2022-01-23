@@ -22,6 +22,7 @@ export default function Etats(props) {
     const [listeComptes, setListeComptes] = useState([]);
     const [dateJour, setdateJour] = useState('');
     const [recetteTotal, setRecetteTotal] = useState(false);
+    const [messageErreur, setMessageErreur] = useState('');
     const [dateDepart, setdateDepart] = useState('');
     const [dateFin, setdateFin] = useState('');
     const [search, setSearch] = useState(false);
@@ -65,6 +66,11 @@ export default function Etats(props) {
                 } else {
                     setRecetteTotal(0);
                 }
+            });
+
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
             });
 
             req.send(data);
@@ -122,6 +128,11 @@ export default function Etats(props) {
                 setListeComptes(result);
                 setCaissier(result[0].nom_user.toUpperCase())
             }
+        });
+
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setMessageErreur('Erreur réseau');
         });
 
         req.send();
@@ -207,6 +218,8 @@ export default function Etats(props) {
                         <button onClick={rechercherHistorique}>rechercher</button>
                         <div>Recette total : <span style={{fontWeight: '700'}}>{recetteTotal ? recetteTotal + ' Fcfa' : '0 Fcfa'}</span></div>
                     </div>
+                    <div className='erreur-message'>{messageErreur}</div>
+
                     <table>
                         <thead>
                             <tr>

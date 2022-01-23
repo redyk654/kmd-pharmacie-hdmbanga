@@ -49,6 +49,11 @@ export default function Connexion(props) {
             }
         });
 
+        req.addEventListener("error", function () {
+            // La requête n'a pas réussi à atteindre le serveur
+            setErreur('Erreur réseau');
+        });
+
         req.send(data);
     }
 
