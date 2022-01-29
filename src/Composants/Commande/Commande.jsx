@@ -308,6 +308,7 @@ export default function Commande(props) {
         setNomPatient(false);
         setAssurance(assuranceDefaut);
         setTypeAssurance(0);
+        setClientSelect([]);
         document.querySelector('.recherche').value = "";
     }
 
@@ -374,24 +375,24 @@ export default function Commande(props) {
 
     }
 
-    const enregistrerAssurance = (data) => {
-        data.append('categorie', 'pharmacie');
+    // const enregistrerAssurance = (data) => {
+    //     data.append('catego', 'pharmacie');
 
-        const req = new XMLHttpRequest();
-        req.open('POST', 'http://serveur/backend-cma/data_assurance.php');
+    //     const req = new XMLHttpRequest();
+    //     req.open('POST', 'http://serveur/backend-cma/data_assurance.php');
 
-        req.send(data);
+    //     req.send(data);
 
-        req.addEventListener("load", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('');
-        });
+    //     req.addEventListener("load", function () {
+    //         // La requête n'a pas réussi à atteindre le serveur
+    //         setMessageErreur('');
+    //     });
 
-        req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('Erreur réseau');
-        });
-    }
+    //     req.addEventListener("error", function () {
+    //         // La requête n'a pas réussi à atteindre le serveur
+    //         setMessageErreur('Erreur réseau');
+    //     });
+    // }
 
     const validerCommande = () => {
 
@@ -430,7 +431,7 @@ export default function Commande(props) {
                 data2.append('nom_vendeur', props.nomConnecte);
                 data2.append('status_vente', 'non payé');
                 data2.append('patient', nomPatient);
-                assurance !== assuranceDefaut && enregistrerAssurance(data2);
+                // assurance !== assuranceDefaut && enregistrerAssurance(data2);
 
                 // Envoi des données
                 const req2 = new XMLHttpRequest();
