@@ -29,6 +29,7 @@ export default function Etats(props) {
     const [caissier, setCaissier] = useState('');
     const [filtre, setFiltre] = useState(false);
     const [non_paye, setNonPaye] = useState(false);
+    const [reload, setReload] = useState(false);
 
     useEffect(() => {
         startChargement();
@@ -43,12 +44,14 @@ export default function Etats(props) {
             data.append('dateF', dateF);
 
             const req = new XMLHttpRequest();
-            req.open('POST', `http://serveur/backend-cma/etats.php`);
+            req.open('POST', `http://localhost/backend-cma/etats.php`);
             
             req.addEventListener('load', () => {
+                setMessageErreur('');
                 const result = JSON.parse(req.responseText);
                 sethistorique(result.filter(item => (item.status_vente === "payé")));
                 setHistoriqueSauvegarde(result);
+                
                 stopChargement();
                 let recette = 0;
                 if (result.length > 0) {
@@ -61,6 +64,7 @@ export default function Etats(props) {
                     if (props.role !== admin) {
                         setFiltre(true);
                         setCaissier(props.nomConnecte);
+                        setReload(!reload);
                     }
 
                 } else {
@@ -69,7 +73,7 @@ export default function Etats(props) {
             });
 
             req.addEventListener("error", function () {
-                // La requête n'a pas réussi à atteindre le serveur
+                // La requête n'a pas réussi à atteindre le localhost
                 setMessageErreur('Erreur réseau');
             });
 
@@ -92,13 +96,12 @@ export default function Etats(props) {
                         recette += parseInt(item.prix_total);
                     });
                 } else {
+                    tab = tab.filter(item => (item.status_vente.toLowerCase() === "payé"));
+
                     tab.map(item => {
-                        if (item.status_vente === "payé") {
                             recette += parseInt(item.prix_total);
-                        }
                     });
 
-                    tab = tab.filter(item => (item.status_vente.toLowerCase() === "payé"));
                 }
                 sethistorique(tab);
                 setRecetteTotal(recette);
@@ -113,13 +116,13 @@ export default function Etats(props) {
             });
             setRecetteTotal(recette);
         }
-    }, [caissier, filtre, non_paye]);
+    }, [caissier, filtre, non_paye, reload]);
 
     useEffect(() => {
         // Récupération des comptes
 
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/recuperer_comptes.php');
+        req.open('GET', 'http://localhost/backend-cma/recuperer_comptes.php');
 
         req.addEventListener('load', () => {
             if(req.status >= 200 && req.status < 400) {
@@ -131,7 +134,7 @@ export default function Etats(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 

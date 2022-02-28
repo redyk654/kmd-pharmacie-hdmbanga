@@ -179,3 +179,12 @@
 .commande .right-side .details-commande .valider-annuler button:last-child {
     margin-left: 20px;
 }
+
+.rafraichir {
+    width: 150px;
+    height: 3vh;
+    color: #f1f1f1;
+    background-color: #012557;
+    cursor: pointer;
+    font-size: 17px;
+}

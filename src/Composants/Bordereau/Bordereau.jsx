@@ -12,7 +12,7 @@ export default function Bordereau(props) {
 
     useEffect(() => {
         const req = new XMLHttpRequest();
-        req.open('GET', `http://serveur/backend-cma/recuperer_commandes.php?`);
+        req.open('GET', `http://localhost/backend-cma/recuperer_commandes.php?`);
 
         req.addEventListener('load', () => {
             const result = JSON.parse(req.responseText);
@@ -36,7 +36,7 @@ export default function Bordereau(props) {
 
         const req = new XMLHttpRequest();
 
-        req.open('POST', 'http://serveur/backend-cma/recuperer_commandes.php');
+        req.open('POST', 'http://localhost/backend-cma/recuperer_commandes.php');
 
         req.addEventListener('load', () => {
             const result = JSON.parse(req.responseText);

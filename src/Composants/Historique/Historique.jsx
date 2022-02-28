@@ -58,7 +58,7 @@ export default function Historique(props) {
         startChargement();
         // Récupération de la liste de produits via Ajax
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/recuperer_historique.php');
+        req.open('GET', 'http://localhost/backend-cma/recuperer_historique.php');
 
         req.addEventListener('load', () => {
             const result = JSON.parse(req.responseText);
@@ -70,7 +70,7 @@ export default function Historique(props) {
         req.send();
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -88,7 +88,7 @@ export default function Historique(props) {
             data.append('pu_vente', medocSelectionne[0].pu_vente);
 
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://serveur/backend-cma/gestion_stock.php?rem=inventaire');
+            req.open('POST', 'http://localhost/backend-cma/gestion_stock.php?rem=inventaire');
     
             req.addEventListener('load', () => {
                 fermerModalConfirmation();
@@ -97,7 +97,7 @@ export default function Historique(props) {
             });
 
             req.addEventListener("error", function () {
-                // La requête n'a pas réussi à atteindre le serveur
+                // La requête n'a pas réussi à atteindre le localhost
                 setMessageErreur('Erreur réseau');
             });
     
@@ -155,7 +155,7 @@ export default function Historique(props) {
         // data1.append('id_prod', medocSelectionne[0].id);
 
         // const req1 = new XMLHttpRequest();
-        // req1.open('POST', 'http://serveur/backend-cma/recuperer_historique.php');
+        // req1.open('POST', 'http://localhost/backend-cma/recuperer_historique.php');
         // req1.addEventListener('load', () => {
         //     if (req1.status >= 200 && req1.status < 400) {
         //         const result = JSON.parse(req1.responseText);
@@ -180,7 +180,7 @@ export default function Historique(props) {
         data1.append('id', medocSelectionne[0].id);
 
         const req1 = new XMLHttpRequest();
-        req1.open('POST', 'http://serveur/backend-cma/gestion_stock.php');
+        req1.open('POST', 'http://localhost/backend-cma/gestion_stock.php');
         req1.addEventListener('load', () => {
             if (req1.status >= 200 && req1.status < 400) {
                 const result = JSON.parse(req1.responseText);
@@ -193,7 +193,7 @@ export default function Historique(props) {
         });
 
         req1.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 

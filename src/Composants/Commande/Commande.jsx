@@ -104,13 +104,13 @@ export default function Commande(props) {
     const [assurance, setAssurance] = useState(assuranceDefaut);
     const [typeAssurance, setTypeAssurance] = useState(0);
     const [statu, setStatu] = useState('done');
-    const [stat, setStat] = useState(false);
+    const [rafraichir, setRafraichir] = useState(false);
 
     useEffect(() => {
         startChargement();
         // Récupération des médicaments dans la base via une requête Ajax
         fetchProduits();
-    }, []);
+    }, [rafraichir]);
 
     useEffect(() => {
         /* Hook exécuter lors de la mise à jour de la liste de médicaments commandés,
@@ -192,9 +192,9 @@ export default function Commande(props) {
     const fetchProduits = () => {
         // Récupération des médicaments dans la base via une requête Ajax
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/recuperer_medoc.php');
+        req.open('GET', 'http://localhost/backend-cma/recuperer_medoc.php');
         req.addEventListener("load", () => {
-            if (req.status >= 200 && req.status < 400) { // Le serveur a réussi à traiter la requête
+            if (req.status >= 200 && req.status < 400) { // Le localhost a réussi à traiter la requête
                 setMessageErreur('');
                 const result = JSON.parse(req.responseText);
 
@@ -209,7 +209,7 @@ export default function Commande(props) {
             }
         });
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -251,7 +251,7 @@ export default function Commande(props) {
             if (parseInt(qteDesire) > medocSelect[0].en_stock) {
                 setMessageErreur('La quantité commandé ne peut pas être supérieure au stock')
             } else if (medocSelect[0].en_stock == 0) {
-                setMessageErreur('Le stock de' + medocSelect[0].designation + ' est épuisé')
+                setMessageErreur('Le stock de ' + medocSelect[0].designation + ' est épuisé')
             } else {
                 setMessageErreur('');
                 Object.defineProperty(medocSelect[0], 'qte_commander', {
@@ -314,7 +314,7 @@ export default function Commande(props) {
 
     const sauvegarder = () => {
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://serveur/backend-cma/backup.php');
+        req.open('POST', 'http://localhost/backend-cma/backup.php');
         req.send();
 
         req.addEventListener('load', () => {
@@ -322,14 +322,14 @@ export default function Commande(props) {
         })
 
         // req.addEventListener("error", function () {
-        //     // La requête n'a pas réussi à atteindre le serveur
+        //     // La requête n'a pas réussi à atteindre le localhost
         //     setMessageErreur('Erreur réseau');
         // });
     }
 
     const idUnique = () => {
         // Création d'un identifiant unique pour la facture
-        return Math.floor((1 + Math.random()) * 0x10000)
+        return Math.floor((1 + Math.random()) * 0x10000000000)
                .toString(16)
                .substring(1) + qtePrixTotal.prix_total;
     }
@@ -354,7 +354,7 @@ export default function Commande(props) {
         data.append('statu', statu);
 
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://serveur/backend-cma/factures_pharmacie.php');
+        req.open('POST', 'http://localhost/backend-cma/factures_pharmacie.php');
 
         req.addEventListener('load', () => {
             setMedoSelect(false);
@@ -367,7 +367,7 @@ export default function Commande(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -379,17 +379,17 @@ export default function Commande(props) {
     //     data.append('catego', 'pharmacie');
 
     //     const req = new XMLHttpRequest();
-    //     req.open('POST', 'http://serveur/backend-cma/data_assurance.php');
+    //     req.open('POST', 'http://localhost/backend-cma/data_assurance.php');
 
     //     req.send(data);
 
     //     req.addEventListener("load", function () {
-    //         // La requête n'a pas réussi à atteindre le serveur
+    //         // La requête n'a pas réussi à atteindre le localhost
     //         setMessageErreur('');
     //     });
 
     //     req.addEventListener("error", function () {
-    //         // La requête n'a pas réussi à atteindre le serveur
+    //         // La requête n'a pas réussi à atteindre le localhost
     //         setMessageErreur('Erreur réseau');
     //     });
     // }
@@ -399,7 +399,7 @@ export default function Commande(props) {
         enregisterPatient();
 
         /* 
-            Organisation des données qui seront envoyés au serveur :
+            Organisation des données qui seront envoyés au localhost :
                 - pour la mise à jour des stocks de médicaments
                 - pour la mise à jour de l'historique des ventes
         */
@@ -435,7 +435,7 @@ export default function Commande(props) {
 
                 // Envoi des données
                 const req2 = new XMLHttpRequest();
-                req2.open('POST', 'http://serveur/backend-cma/maj_historique.php');
+                req2.open('POST', 'http://localhost/backend-cma/maj_historique.php');
                 
                 // Une fois la requête charger on vide tout les états
                 req2.addEventListener('load', () => {
@@ -458,7 +458,7 @@ export default function Commande(props) {
                 });
 
                 req2.addEventListener("error", function () {
-                    // La requête n'a pas réussi à atteindre le serveur
+                    // La requête n'a pas réussi à atteindre le localhost
                     setMessageErreur('Erreur réseau');
                 });
                 req2.send(data2);
@@ -505,7 +505,7 @@ export default function Commande(props) {
         setModalPatient(true);
 
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/gestion_patients.php');
+        req.open('GET', 'http://localhost/backend-cma/gestion_patients.php');
 
         req.addEventListener('load', () => {
             setMessageErreur('');
@@ -515,7 +515,7 @@ export default function Commande(props) {
         })
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
         req.send();
@@ -563,15 +563,15 @@ export default function Commande(props) {
                 data.append('type_assurance', 0);
                 
                 const req = new XMLHttpRequest();
-                req.open('POST', 'http://serveur/backend-cma/gestion_patients.php');
+                req.open('POST', 'http://localhost/backend-cma/gestion_patients.php');
 
                 req.addEventListener("load", function () {
-                    // La requête n'a pas réussi à atteindre le serveur
+                    // La requête n'a pas réussi à atteindre le localhost
                     setMessageErreur('');
                 });
 
                 req.addEventListener("error", function () {
-                    // La requête n'a pas réussi à atteindre le serveur
+                    // La requête n'a pas réussi à atteindre le localhost
                     setMessageErreur('Erreur réseau');
                 });
     
@@ -650,7 +650,9 @@ export default function Commande(props) {
                 <p className="search-zone">
                     <input type="text" placeholder="recherchez un produit" className="recherche" onChange={filtrerListe} />
                 </p>
-
+                <p>
+                    <button className="rafraichir" onClick={() => {setRafraichir(!rafraichir)}}>rafraichir</button>
+                </p>
                 <div className="liste-medoc">
                     <h1>Liste de produits</h1>
                     <ul>

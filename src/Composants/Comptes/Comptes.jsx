@@ -53,7 +53,7 @@ export default function Comptes(props) {
         // Récupération des comptes
 
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/recuperer_comptes.php');
+        req.open('GET', 'http://localhost/backend-cma/recuperer_comptes.php');
 
         req.addEventListener('load', () => {
             if(req.status >= 200 && req.status < 400) {
@@ -64,7 +64,7 @@ export default function Comptes(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -135,7 +135,7 @@ export default function Comptes(props) {
             data.append('role', document.querySelector('form').role.value);
 
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://serveur/backend-cma/enregistrer_compte.php');
+            req.open('POST', 'http://localhost/backend-cma/enregistrer_compte.php');
 
             req.addEventListener('load', () => {
                 setNvCompte(utilisateur);
@@ -145,7 +145,7 @@ export default function Comptes(props) {
             })
 
             req.addEventListener("error", function () {
-                // La requête n'a pas réussi à atteindre le serveur
+                // La requête n'a pas réussi à atteindre le localhost
                 setMessageErreur('Erreur réseau');
             });
 
@@ -171,7 +171,7 @@ export default function Comptes(props) {
 
         // Récupération de l'historique des recetttes du vendeur selectionner
         const req1 = new XMLHttpRequest();
-        req1.open('GET', `http://serveur/backend-cma/gestion_recette.php?nom=${e.target.id}`);
+        req1.open('GET', `http://localhost/backend-cma/gestion_recette.php?nom=${e.target.id}`);
         req1.addEventListener('load', () => {
             if(req1.status >= 200 && req1.status < 400) {
                 const result = JSON.parse(req1.responseText);
@@ -180,7 +180,7 @@ export default function Comptes(props) {
         });
 
         req1.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -194,10 +194,10 @@ export default function Comptes(props) {
 
         const req2 = new XMLHttpRequest();
         if (heure.getHours() < 10 && heure.getHours() > 6) {
-            req2.open('POST', 'http://serveur/backend-cma/recette_jour.php?service=nuit');
+            req2.open('POST', 'http://localhost/backend-cma/recette_jour.php?service=nuit');
             req2.send(data);
         } else if (heure.getHours() > 14 && heure.getHours() < 18) {
-            req2.open('POST', 'http://serveur/backend-cma/recette_jour.php?service=jour');
+            req2.open('POST', 'http://localhost/backend-cma/recette_jour.php?service=jour');
             req2.send(data);
         }
 
@@ -210,7 +210,7 @@ export default function Comptes(props) {
         });
 
         req2.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
     }
@@ -224,7 +224,7 @@ export default function Comptes(props) {
         data.append('montant', recettejour.recette);
 
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://serveur/backend-cma/gestion_recette.php');
+        req.open('POST', 'http://localhost/backend-cma/gestion_recette.php');
 
         req.addEventListener('load', () => {
             if (req.status >= 200 && req.status < 400) {
@@ -233,7 +233,7 @@ export default function Comptes(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
+            // La requête n'a pas réussi à atteindre le localhost
             setMessageErreur('Erreur réseau');
         });
 
@@ -249,7 +249,7 @@ export default function Comptes(props) {
         // Suppression d'un compte
         if (compteSelectionne.length > 0) {
             const req = new XMLHttpRequest();
-            req.open('GET', `http://serveur/backend-cma/supprimer_vendeur.php?compte=${compteSelectionne[0].nom_user}`);
+            req.open('GET', `http://localhost/backend-cma/supprimer_vendeur.php?compte=${compteSelectionne[0].nom_user}`);
 
             req.addEventListener('load', () => {
                 if(req.status >= 200 && req.status < 400) {
@@ -260,7 +260,7 @@ export default function Comptes(props) {
             });
 
             req.addEventListener("error", function () {
-                // La requête n'a pas réussi à atteindre le serveur
+                // La requête n'a pas réussi à atteindre le localhost
                 setMessageErreur('Erreur réseau');
             });
 
