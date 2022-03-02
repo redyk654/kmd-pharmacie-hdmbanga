@@ -525,7 +525,21 @@ export default function Commande(props) {
     const filtrerPatient = (e) => {
         setpatient(e.target.value);
 
-        setlistePatient(listePatientSauvegarde.filter(item => (item.nom.toLowerCase().indexOf(e.target.value.trim().toLowerCase()) !== -1)))
+        const req = new XMLHttpRequest();
+
+        req.open('GET', `http://localhost/backend-cma/rechercher_patient.php?str=${e.target.value}`);
+
+        req.addEventListener('load', () => {
+            if (req.status >= 200 && req.status < 400) {
+                const result = JSON.parse(req.responseText);
+
+                setlistePatient(result);
+                setlistePatientSauvegarde(result);
+            }
+            
+        });
+
+        req.send();
     }
 
     const ajouterPatient = () => {
