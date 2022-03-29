@@ -31,7 +31,7 @@ export default function Connexion(props) {
         data.append('mdp', mdp);
 
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://localhost/backend-cma/connexion.php');
+        req.open('POST', 'http://serveur/backend-cma/connexion.php');
 
         req.addEventListener('load', () => {
             if (req.status >= 200 && req.status < 400) {
@@ -50,7 +50,7 @@ export default function Connexion(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le localhost
+            // La requête n'a pas réussi à atteindre le serveur
             setErreur('Erreur réseau');
         });
 

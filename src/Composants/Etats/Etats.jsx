@@ -44,7 +44,7 @@ export default function Etats(props) {
             data.append('dateF', dateF);
 
             const req = new XMLHttpRequest();
-            req.open('POST', `http://localhost/backend-cma/etats.php`);
+            req.open('POST', `http://serveur/backend-cma/etats.php`);
             
             req.addEventListener('load', () => {
                 setMessageErreur('');
@@ -73,7 +73,7 @@ export default function Etats(props) {
             });
 
             req.addEventListener("error", function () {
-                // La requête n'a pas réussi à atteindre le localhost
+                // La requête n'a pas réussi à atteindre le serveur
                 setMessageErreur('Erreur réseau');
             });
 
@@ -122,7 +122,7 @@ export default function Etats(props) {
         // Récupération des comptes
 
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost/backend-cma/recuperer_comptes.php');
+        req.open('GET', 'http://serveur/backend-cma/recuperer_comptes.php');
 
         req.addEventListener('load', () => {
             if(req.status >= 200 && req.status < 400) {
@@ -134,7 +134,7 @@ export default function Etats(props) {
         });
 
         req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le localhost
+            // La requête n'a pas réussi à atteindre le serveur
             setMessageErreur('Erreur réseau');
         });
 

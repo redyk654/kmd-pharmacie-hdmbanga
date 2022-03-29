@@ -43,7 +43,7 @@ export default function ModifierProduit() {
     useEffect(() => {
         // Récupération de la liste de produits via Ajax
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost/backend-cma/recuperer_medoc.php');
+        req.open('GET', 'http://serveur/backend-cma/recuperer_medoc.php');
 
         req.addEventListener('load', () => {
             if(req.status >= 200 && req.status < 400) {
@@ -76,7 +76,7 @@ export default function ModifierProduit() {
             data.append('id', produitSelectionne[0].id);
 
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://localhost/backend-cma/supprimer_produit.php');
+            req.open('POST', 'http://serveur/backend-cma/supprimer_produit.php');
 
             req.addEventListener('load', () => {
                 if (req.status >= 200 && req.status < 400) {
@@ -105,7 +105,7 @@ export default function ModifierProduit() {
             data.append('designation', produitSelectionne[0].designation);
             
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://localhost/backend-cma/maj_prix.php');
+            req.open('POST', 'http://serveur/backend-cma/maj_prix.php');
             
             req.addEventListener('load', () => {
                 if (req.status >= 200 && req.status < 400) {
@@ -124,7 +124,7 @@ export default function ModifierProduit() {
 
     const supprimerProduitEpuise = () => {
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://localhost/backend-cma/vider.php?stock=0');
+        req.open('POST', 'http://serveur/backend-cma/vider.php?stock=0');
         
         req.addEventListener('load', () => {
             if (req.status >= 200 && req.status < 400) {

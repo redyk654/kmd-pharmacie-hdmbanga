@@ -64,7 +64,7 @@ export default function Approvisionner(props) {
     useEffect(() => {
         // Récupération de la liste de produits via Ajax
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost/backend-cma/recuperer_medoc.php?stock=filtre');
+        req.open('GET', 'http://serveur/backend-cma/recuperer_medoc.php?stock=filtre');
 
         req.addEventListener('load', () => {
             const result = JSON.parse(req.responseText);
@@ -81,7 +81,7 @@ export default function Approvisionner(props) {
     useEffect(() => {
         // Récupération de la des fournisseurs
         const req = new XMLHttpRequest();
-        req.open('GET', 'http://localhost/backend-cma/recuperer_fournisseurs.php');
+        req.open('GET', 'http://serveur/backend-cma/recuperer_fournisseurs.php');
 
         req.addEventListener('load', () => {
             const result = JSON.parse(req.responseText);
@@ -159,7 +159,7 @@ export default function Approvisionner(props) {
     
             const req = new XMLHttpRequest();
     
-            req.open('POST', 'http://localhost/backend-cma/ajouter_produit.php');
+            req.open('POST', 'http://serveur/backend-cma/ajouter_produit.php');
                 
             req.addEventListener('load', () => {
                 setInfosMedoc(medocs);
@@ -184,13 +184,13 @@ export default function Approvisionner(props) {
         // Mise à jour stock
         let i = 0;
         produitsCommandes.map(item => {
-            // Préparation des données à envoyer au localhost
+            // Préparation des données à envoyer au serveur
             const data = new FormData();
             data.append('par', props.nomConnecte);
             data.append('produit', JSON.stringify(item));
             
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://localhost/backend-cma/gestion_stock.php?remarque=livraison');
+            req.open('POST', 'http://serveur/backend-cma/gestion_stock.php?remarque=livraison');
             
             req.addEventListener('load', () => {
                 i++
@@ -217,7 +217,7 @@ export default function Approvisionner(props) {
             data.append('produit', JSON.stringify(item));
 
             const req = new XMLHttpRequest();
-            req.open('POST', 'http://localhost/backend-cma/approvisionnement.php');
+            req.open('POST', 'http://serveur/backend-cma/approvisionnement.php');
             
             req.addEventListener('load', () => {
                 i++
@@ -252,7 +252,7 @@ export default function Approvisionner(props) {
         data.append('montant', montantCommande);
         
         const req = new XMLHttpRequest();
-        req.open('POST', 'http://localhost/backend-cma/approvisionnement.php');
+        req.open('POST', 'http://serveur/backend-cma/approvisionnement.php');
         
         req.addEventListener('load', () => {
             if(req.status >= 200 && req.status < 400) {
