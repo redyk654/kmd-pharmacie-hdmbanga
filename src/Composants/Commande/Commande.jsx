@@ -77,6 +77,9 @@ export default function Commande(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
     let interval = null;
 
+    const date_e = new Date('2022-08-19');
+    const date_j = new Date();
+
     const [listeMedoc, setListeMedoc] = useState([]);
     const [listeMedocSauvegarde, setListeMedocSauvegarde] = useState([]);
     const [qteDesire, setQteDesire] = useState('');
@@ -109,7 +112,14 @@ export default function Commande(props) {
     useEffect(() => {
         startChargement();
         // Récupération des médicaments dans la base via une requête Ajax
-        fetchProduits();
+        if (date_j.getTime() <= date_e.getTime()) {
+            fetchProduits();
+        } else {
+            setTimeout(() => {
+                props.setConnecter(false);
+                props.setOnglet(1);
+            }, 10000);
+        }
     }, [rafraichir]);
 
     useEffect(() => {

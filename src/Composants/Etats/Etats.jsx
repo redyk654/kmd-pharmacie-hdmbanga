@@ -2,7 +2,8 @@ import React, { useEffect, useState, useContext, useRef, Fragment } from 'react'
 import './Etats.css';
 import { ContextChargement } from '../../Context/Chargement';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-
+import ReactToPrint from 'react-to-print';
+import ImprimerEtat from './ImprimerEtat';
 
 export default function Etats(props) {
 
@@ -250,6 +251,20 @@ export default function Etats(props) {
                         </tbody>
                     </table>
                 </div>
+                <div style={{textAlign: 'center'}}>
+                    <ReactToPrint
+                        trigger={() => <button style={{color: '#f1f1f1', height: '5vh', width: '20%', cursor: 'pointer', fontSize: 'large', fontWeight: '600'}}>Imprimer</button>}
+                        content={() => componentRef.current}
+                    />
+                </div>
+            </div>
+            <div style={{display: 'none'}}>
+                <ImprimerEtat
+                    ref={componentRef}
+                    dateDepart={dateDepart}
+                    dateFin={dateFin}
+                    recetteTotal={recetteTotal}
+                />
             </div>
         </section>
     )

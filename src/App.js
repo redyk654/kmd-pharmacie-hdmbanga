@@ -33,7 +33,7 @@ function App() {
   let contenu;
   switch(onglet) {
     case 1:
-      contenu = <Commande nomConnecte={nomConnecte} />
+      contenu = <Commande nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
       break;
     case 2:
       contenu = <Historique nomConnecte={nomConnecte} />
