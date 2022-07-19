@@ -36,7 +36,7 @@ function App() {
       contenu = <Commande nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
       break;
     case 2:
-      contenu = <Historique nomConnecte={nomConnecte} />
+      contenu = <Historique nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
       break;
     case 3:
       contenu = <Maj nomConnecte={nomConnecte} />
@@ -48,7 +48,7 @@ function App() {
       contenu = <GestionFactures nomConnecte={nomConnecte} />
       break;
     case 6:
-      contenu = <Etats nomConnecte={nomConnecte} role={role} />
+      contenu = <Etats nomConnecte={nomConnecte} role={role} setConnecter={setConnecter} setOnglet={setOnglet} />
       break;
     case 7:
       contenu = <Stats nomConnecte={nomConnecte} />

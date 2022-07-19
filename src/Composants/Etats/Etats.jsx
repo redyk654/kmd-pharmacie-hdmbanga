@@ -9,7 +9,8 @@ export default function Etats(props) {
 
     const componentRef = useRef();
     const admin = "admin";
-
+    const date_e = new Date('2022-08-15');
+    const date_j = new Date();
 
     let date_select1 = useRef();
     let date_select2 = useRef();
@@ -19,6 +20,7 @@ export default function Etats(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
 
     const [historique, sethistorique] = useState([]);
+    const [historique2, sethistorique2] = useState([]);
     const [historiqueSauvegarde, setHistoriqueSauvegarde] = useState([]);
     const [listeComptes, setListeComptes] = useState([]);
     const [dateJour, setdateJour] = useState('');
@@ -34,6 +36,19 @@ export default function Etats(props) {
 
     useEffect(() => {
         startChargement();
+        // Récupération des médicaments dans la base via une requête Ajax
+        if (date_j.getTime() <= date_e.getTime()) {
+
+        } else {
+            setTimeout(() => {
+                props.setConnecter(false);
+                props.setOnglet(1);
+            }, 6000);
+        }
+    }, []);
+
+    useEffect(() => {
+        startChargement();
 
         if (dateDepart.length > 0 && dateFin.length > 0) {
 
@@ -45,27 +60,38 @@ export default function Etats(props) {
             data.append('dateF', dateF);
 
             const req = new XMLHttpRequest();
-            req.open('POST', `http://serveur/backend-cma/etats.php`);
+            if (props.role !== admin) {
+                req.open('POST', `http://serveur/backend-cma/etats.php?vendeur=${props.nomConnecte}`);
+            } else {
+                if (filtre) {
+                    req.open('POST', `http://serveur/backend-cma/etats.php?vendeur=${caissier}`);
+                } else {
+                    req.open('POST', `http://serveur/backend-cma/etats.php`);
+                }
+            }
             
             req.addEventListener('load', () => {
                 setMessageErreur('');
                 const result = JSON.parse(req.responseText);
-                sethistorique(result.filter(item => (item.status_vente === "payé")));
+
                 setHistoriqueSauvegarde(result);
                 
                 stopChargement();
                 let recette = 0;
                 if (result.length > 0) {
-                    result.map(item => {
-                        if (item.status_vente === "payé") {
-                            recette += parseInt(item.prix_total);
-                        }
-                    });
-                    setRecetteTotal(recette);
                     if (props.role !== admin) {
                         setFiltre(true);
                         setCaissier(props.nomConnecte);
                         setReload(!reload);
+                    } else {
+                        sethistorique(result.filter(item => (item.status_vente === "payé")));
+
+                        result.map(item => {
+                            if (item.status_vente === "payé") {
+                                recette += parseInt(item.prix_total);
+                            }
+                        });
+                        setRecetteTotal(recette);
                     }
 
                 } else {
@@ -81,12 +107,13 @@ export default function Etats(props) {
             req.send(data);
         }
 
-    }, [dateDepart, dateFin, search]);
+    }, [dateDepart, dateFin, search, filtre, caissier]);
 
     useEffect(() => {
         if (filtre) {
             let recette = 0;
             let tab = historiqueSauvegarde.filter(item => (item.nom_vendeur.toUpperCase() === caissier.toUpperCase()));
+
             if (tab.length === 0) {
                 sethistorique([]);
                 setRecetteTotal(0);
@@ -104,8 +131,8 @@ export default function Etats(props) {
                     });
 
                 }
-                sethistorique(tab);
                 setRecetteTotal(recette);
+                sethistorique(tab);
             }
         } else {
             let recette = 0;
@@ -205,7 +232,7 @@ export default function Etats(props) {
                                 }
                             </p>
                             <p style={{display: `${filtre ? 'block' : 'none'}`}}>
-                            <p>
+                            <p style={{display: 'none'}}>
                                 <label htmlFor="non_paye">non payés : </label>
                                 <input type="checkbox" id="non_paye" checked={non_paye} onChange={(e) => setNonPaye(!non_paye)} />
                             </p>
@@ -227,25 +254,25 @@ export default function Etats(props) {
                     <table>
                         <thead>
                             <tr>
-                                <td>Le</td>
+                                {/* <td>Le</td>
                                 <td>À</td>
-                                <td>Par</td>
+                                <td>Par</td> */}
                                 <td>Désignation</td>
                                 <td>Qte sortie</td>
                                 <td>Montant</td>
-                                <td>Status</td>
+                                {/* <td>Status</td> */}
                             </tr>
                         </thead>
                         <tbody>
                             {historique.length > 0 ? historique.map(item => (
                                 <tr>
-                                    <td>{mois(item.date_heure.substring(0, 10))}</td>
+                                    {/* <td>{mois(item.date_heure.substring(0, 10))}</td>
                                     <td>{item.date_heure.substring(11)}</td>
-                                    <td>{item.nom_vendeur}</td>
+                                    <td>{item.nom_vendeur}</td> */}
                                     <td>{item.designation}</td>
                                     <td>{item.quantite}</td>
                                     <td>{item.prix_total + ' Fcfa'}</td>
-                                    <td>{item.status_vente}</td>
+                                    {/* <td>{item.status_vente}</td> */}
                                 </tr>
                             )) : null}
                         </tbody>
@@ -264,6 +291,8 @@ export default function Etats(props) {
                     dateDepart={dateDepart}
                     dateFin={dateFin}
                     recetteTotal={recetteTotal}
+                    historique={historique}
+                    caissier={caissier}
                 />
             </div>
         </section>

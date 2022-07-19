@@ -34,6 +34,8 @@ export default function Historique(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
 
     let date_filtre = useRef();
+    const date_e = new Date('2022-08-15');
+    const date_j = new Date();
 
     const [listeHistorique, setListeHistorique] = useState([]);
     const [listeSauvegarde, setListeSauvegarde] = useState([]);
@@ -53,26 +55,32 @@ export default function Historique(props) {
     const [state, setState] = useState(false);
     const [messageErreur, setMessageErreur] = useState('');
 
-
     useEffect(() => {
         startChargement();
-        // Récupération de la liste de produits via Ajax
-        const req = new XMLHttpRequest();
-        req.open('GET', 'http://serveur/backend-cma/recuperer_historique.php');
+        if (date_j.getTime() <= date_e.getTime()) {
+            // Récupération de la liste de produits via Ajax
+            const req = new XMLHttpRequest();
+            req.open('GET', 'http://serveur/backend-cma/recuperer_historique.php');
 
-        req.addEventListener('load', () => {
-            const result = JSON.parse(req.responseText);
-            setListeHistorique(result);
-            setListeSauvegarde(result);
-            stopChargement();
-        });
+            req.addEventListener('load', () => {
+                const result = JSON.parse(req.responseText);
+                setListeHistorique(result);
+                setListeSauvegarde(result);
+                stopChargement();
+            });
 
-        req.send();
+            req.send();
 
-        req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('Erreur réseau');
-        });
+            req.addEventListener("error", function () {
+                // La requête n'a pas réussi à atteindre le serveur
+                setMessageErreur('Erreur réseau');
+            });
+        } else {
+            setTimeout(() => {
+                props.setConnecter(false);
+                props.setOnglet(1);
+            }, 10000);
+        }
 
     }, [state]);
 

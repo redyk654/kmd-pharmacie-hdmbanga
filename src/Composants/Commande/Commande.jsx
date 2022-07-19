@@ -77,7 +77,7 @@ export default function Commande(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
     let interval = null;
 
-    const date_e = new Date('2022-08-19');
+    const date_e = new Date('2022-08-15');
     const date_j = new Date();
 
     const [listeMedoc, setListeMedoc] = useState([]);
@@ -675,7 +675,7 @@ export default function Commande(props) {
                     <input type="text" placeholder="recherchez un produit" className="recherche" onChange={filtrerListe} />
                 </p>
                 <p>
-                    <button className="rafraichir" onClick={() => {setRafraichir(!rafraichir)}}>rafraichir</button>
+                    {/* <button className="rafraichir" onClick={() => {setRafraichir(!rafraichir)}}>rafraichir</button> */}
                 </p>
                 <div className="liste-medoc">
                     <h1>Liste de produits</h1>
