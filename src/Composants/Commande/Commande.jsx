@@ -77,7 +77,7 @@ export default function Commande(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
     let interval = null;
 
-    const date_e = new Date('2022-08-15');
+    const date_e = new Date('2022-12-15');
     const date_j = new Date();
 
     const [listeMedoc, setListeMedoc] = useState([]);

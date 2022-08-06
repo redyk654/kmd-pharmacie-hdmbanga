@@ -34,7 +34,7 @@ export default function Historique(props) {
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
 
     let date_filtre = useRef();
-    const date_e = new Date('2022-08-15');
+    const date_e = new Date('2022-12-15');
     const date_j = new Date();
 
     const [listeHistorique, setListeHistorique] = useState([]);
