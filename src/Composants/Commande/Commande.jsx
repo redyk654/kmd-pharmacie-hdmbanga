@@ -73,6 +73,9 @@ const stylePatient = {
 export default function Commande(props) {
 
     const componentRef = useRef();
+    const elt = useRef();
+    const elt2 = useRef();
+    const refPatient= useRef();
     const assuranceDefaut = 'aucune';
     const {chargement, stopChargement, startChargement} = useContext(ContextChargement);
     let interval = null;
@@ -233,7 +236,7 @@ export default function Commande(props) {
         if (parseInt(medocSelectionne[0].en_stock) === 0) {
             setAlerteStock('le stock de ' + medocSelectionne[0].designation + ' est épuisé ! Pensez à vous approvisionner');
             setModalAlerte(true);
-        } else if (parseInt(medocSelectionne[0].en_stock) <= parseInt(medocSelectionne[0].min_rec)) {
+        } else if (parseInt(medocSelectionne[0].en_stock) < parseInt(medocSelectionne[0].min_rec)) {
             setAlerteStock('Vous serez bientôt à cour de ' + medocSelectionne[0].designation + ' ! Pensez à vous approvisionner');
             setModalAlerte(true);
         }
@@ -352,7 +355,7 @@ export default function Commande(props) {
         const data = new FormData();
 
         data.append('id', id);
-        data.append('caissier', props.nomConnecte);
+        data.append('vendeur', props.nomConnecte);
         data.append('prix_total', qtePrixTotal.prix_total);
         data.append('patient', nomPatient);
         data.append('a_payer', qtePrixTotal.a_payer);
@@ -416,7 +419,11 @@ export default function Commande(props) {
         
         if(medocCommandes.length > 0) {
 
-            document.querySelector('.valider').disabled = true;
+            // document.querySelector('.valider').disabled = true;
+            // console.log(elt.current.disabled);
+            elt.current.disabled = true;
+            elt2.current.disabled = true;
+
             
             medocCommandes.map(item => {
                 item.stock_restant = parseInt(item.en_stock) - parseInt(item.qte_commander);
@@ -451,7 +458,7 @@ export default function Commande(props) {
                 req2.addEventListener('load', () => {
                     if (req2.status >= 200 && req2.status < 400) {
                         setMessageErreur('');
-                        listeMedoc.map(item2 => {
+                        listeMedocSauvegarde.map(item2 => {
                             if (item2.id == item.id) {
                                 Object.defineProperty(item2, 'en_stock', {
                                     value: parseInt(item.en_stock) - parseInt(item.qte_commander),
@@ -484,7 +491,7 @@ export default function Commande(props) {
                     <div style={{display: 'flex', flexDirection: 'column' , width: '100%', marginTop: 10, color: '#f1f1f1'}}>
                         <label htmlFor="" style={{display: 'block',}}>Nom et prénom</label>
                         <div>
-                            <input type="text" name="qteDesire" style={{width: '250px', height: '4vh'}} value={patient} onChange={filtrerPatient} autoComplete='off' />
+                            <input ref={refPatient} type="text" name="qteDesire" style={{width: '250px', height: '4vh'}} value={patient} onChange={filtrerPatient} autoComplete='off' />
                             <button style={{cursor: 'pointer', width: '45px', height: '4vh', marginLeft: '5px'}} onClick={ajouterPatient}>OK</button>
                         </div>
                         {
@@ -518,6 +525,7 @@ export default function Commande(props) {
         req.open('GET', 'http://serveur/backend-cma/gestion_patients.php');
 
         req.addEventListener('load', () => {
+            refPatient.current.focus();
             setMessageErreur('');
             const result = JSON.parse(req.responseText);
             setlistePatient(result);
@@ -657,14 +665,15 @@ export default function Commande(props) {
             >
                 <h2 style={{color: '#fff'}}>êtes-vous sûr de vouloir valider la vente ?</h2>
                 <div style={{textAlign: 'center'}} className='modal-button'>
-                    <button  style={{width: '20%', height: '5vh', cursor: 'pointer', marginRight: '10px'}} onClick={fermerModalConfirmation}>Annuler</button>
-                    <button className="valider" style={{width: '20%', height: '5vh', cursor: 'pointer'}} onClick={validerCommande}>Confirmer</button>
+                    <button ref={elt2}  style={{width: '20%', height: '5vh', cursor: 'pointer', marginRight: '10px'}} onClick={fermerModalConfirmation}>Annuler</button>
+                    <button ref={elt} className="valider" style={{width: '20%', height: '5vh', cursor: 'pointer'}} onClick={validerCommande}>Confirmer</button>
                 </div>
             </Modal>
             <Modal
                 isOpen={modalReussi}
                 style={customStyles2}
                 contentLabel="Commande réussie"
+                onRequestClose={fermerModalReussi}
             >
                 <h2 style={{color: '#fff'}}>La vente a bien été enregistré !</h2>
                 <button style={{width: '20%', height: '5vh', cursor: 'pointer', marginRight: '15px', fontSize: 'large'}} onClick={fermerModalReussi}>Fermer</button>

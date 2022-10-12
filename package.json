@@ -3,11 +3,11 @@
   "name": "Pharmacie-Bepanda",
   "author": "Chrisppo Youmbissi Kamdem",
   "copyright": "Copyright © 2021 Chrisppo Youmbissi",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "main": "public/electron.js",
   "homepage": "./",
   "win": {
-    "icon": "./public/pharmacie.png"
+    "icon": "./public/pharmacie_icon.ico"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.10",

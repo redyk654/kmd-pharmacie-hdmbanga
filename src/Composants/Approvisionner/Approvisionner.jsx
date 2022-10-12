@@ -118,31 +118,25 @@ export default function Approvisionner(props) {
          */
         e.preventDefault();
         const regex = /^\d+-\d+$/;
-        if (isNaN(montantCommande) || montantCommande.length === 0) {
-            setMsgErreur("le montant de la commande n'est pas défini");
-        } else if (parseInt(montantCommande) <= 0) {
-            setMsgErreur("Le montant de la commande ne peut pas être négatif ou nul");
-        } else {
-            if (isNaN(stock_ajoute)) {
+        if (isNaN(stock_ajoute)) {
                 setMsgErreur('veuillez saisir un nombre dans la quantité commandé');
-            } else {
-                if(parseInt(stock_ajoute) > 0) {
-                    if (!isNaN(pu_vente) && !isNaN(min_rec) && !isNaN(pu_achat)) {
-    
-                        setMsgErreur('');
-                        const filtrerDoublons = produitsCommandes.filter(item => (item.id != infosMedoc.id));
-                        
-                        filtrerDoublons.push(infosMedoc);
-                        setProduitsCommandes(filtrerDoublons);
-                        setInfosMedoc(medocs);
-                        document.querySelector('.rechercher').value = "";
-                        document.querySelector('.rechercher').focus();
-                    } else {
-                        setMsgErreur("Le prix de vente, le prix d'achat et le stock minimum doivent être des nombres");
-                    }
+        } else {
+            if(parseInt(stock_ajoute) > 0) {
+                if (!isNaN(pu_vente) && !isNaN(min_rec) && !isNaN(pu_achat)) {
+
+                    setMsgErreur('');
+                    const filtrerDoublons = produitsCommandes.filter(item => (item.id != infosMedoc.id));
+                    
+                    filtrerDoublons.push(infosMedoc);
+                    setProduitsCommandes(filtrerDoublons);
+                    setInfosMedoc(medocs);
+                    document.querySelector('.rechercher').value = "";
+                    document.querySelector('.rechercher').focus();
                 } else {
-                    setMsgErreur("la quantité commandé n'est pas défini");
+                    setMsgErreur("Le prix de vente, le prix d'achat et le stock minimum doivent être des nombres");
                 }
+            } else {
+                setMsgErreur("la quantité commandé n'est pas défini");
             }
         }
     }
@@ -308,7 +302,7 @@ export default function Approvisionner(props) {
                 </div>
                 <div className="montant-commande">
                     <label htmlFor="">montant de la commande : </label>
-                    <input type="text" name="montant_commande" value={montantCommande} onChange={(e) => setMontantCommande(e.target.value)} />
+                    <input type="number" name="montant_commande" value={montantCommande} onChange={(e) => setMontantCommande(e.target.value)} />
                 </div>
                 <p className="search-zone">
                     <input type="text" className="rechercher" placeholder="recherchez un produit" onChange={filtrerListe} />

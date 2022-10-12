@@ -61,7 +61,7 @@ export default function Connexion(props) {
         <div className='form'>
             <div style={{fontWeight: '600', opacity: '.1', position: 'absolute', top: 0}}>Chrisppo Youmbissi Kamdem</div>
             <form action="">
-                <h1 className='title'>CMA de Bepanda</h1>
+                <h1 className='title'>Pharmacie</h1>
                 <p className='text-field'>
                     <label htmlFor="nom" ref={name_field}>Identifiant</label>
                     <input

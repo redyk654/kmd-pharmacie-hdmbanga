@@ -8,7 +8,7 @@ function createWindow () {
     height: 640,
     minWidth: 850,
     minHeight: 520,
-    icon: path.join(__dirname, '../public/pharmacie.png'),
+    icon: path.join(__dirname, '../build/pharmacie_icon.ico'),
     webPreferences: {
       nodeIntegration: true
     }
