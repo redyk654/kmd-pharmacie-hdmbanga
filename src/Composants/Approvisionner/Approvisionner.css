@@ -88,6 +88,20 @@
     color: #0e771a;
 }
 
+.approvisionner .details-approv input {
+    border-radius: 5px;
+    padding: 4px;
+}
+
+.approvisionner .details-approv input[type=text]:focus, 
+.approvisionner .details-approv input[type=number]:focus {
+    box-shadow: inset 0 0 0 3px #fff,
+			/* 0 0 0 4px #fff, */
+			3px -3px 10px #1beabd,
+			-3px 3px 10px #0cd3a8;
+    border: 1px solid #1beabd;
+}
+
 .approvisionner .details-approv select {
     margin-top: 15px;
 }

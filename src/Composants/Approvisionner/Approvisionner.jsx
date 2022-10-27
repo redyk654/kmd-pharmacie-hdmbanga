@@ -120,6 +120,8 @@ export default function Approvisionner(props) {
         const regex = /^\d+-\d+$/;
         if (isNaN(stock_ajoute)) {
                 setMsgErreur('veuillez saisir un nombre dans la quantité commandé');
+        } else if (designation.length === 0) {
+            setMsgErreur('Le produit doit avoir une designation')
         } else {
             if(parseInt(stock_ajoute) > 0) {
                 if (!isNaN(pu_vente) && !isNaN(min_rec) && !isNaN(pu_achat)) {
@@ -271,7 +273,7 @@ export default function Approvisionner(props) {
         <section className="approvisionner">
             <Modal
                 isOpen={modalConfirmation}
-                onRequestClose={fermerModalConfirmation}
+                // onRequestClose={fermerModalConfirmation}
                 style={customStyles1}
                 contentLabel="validation commande"
             >
@@ -325,7 +327,7 @@ export default function Approvisionner(props) {
                             </div>
                             <div className="detail-item">
                                 <label htmlFor="">Stock Minimum</label>
-                                <input type="text" name="min_rec" value={min_rec} onChange={handleChange} autoComplete="off" />
+                                <input type="number" name="min_rec" value={min_rec} onChange={handleChange} autoComplete="off" />
                             </div>
                         </div>
                         <div className="box">
@@ -341,7 +343,7 @@ export default function Approvisionner(props) {
                         <div className="box">
                             <div className="detail-item">
                                 <label htmlFor="">Prix de vente</label>
-                                <input type="text" name="pu_vente" value={pu_vente} onChange={handleChange} autoComplete="off" />
+                                <input type="number" name="pu_vente" value={pu_vente} onChange={handleChange} autoComplete="off" />
                             </div>
                             <div className="detail-item">
                                 <label htmlFor="">Conditionnement</label>
@@ -357,7 +359,7 @@ export default function Approvisionner(props) {
                             </div>
                             <div className="detail-item">
                                 <label htmlFor="">Quantité commandé</label>
-                                <input type="text" name="stock_ajoute" value={stock_ajoute} onChange={handleChange} autoComplete="off" />
+                                <input type="number" name="stock_ajoute" value={stock_ajoute} onChange={handleChange} autoComplete="off" />
                             </div>
                             <div className="detail-item">
                                 <button onClick={ajouterMedoc}>Ajouter</button>

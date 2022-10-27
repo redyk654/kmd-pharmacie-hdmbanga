@@ -4,6 +4,8 @@ import { ContextChargement } from '../../Context/Chargement';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import Modal from 'react-modal';
+import { Toaster, toast } from "react-hot-toast";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const customStyles2 = {
     content: {
@@ -119,10 +121,18 @@ export default function Historique(props) {
                 const d = new Date(dateApprov);
                 setMedocSelectionne(medocSelectionneSauvegarde.filter(item => (item.date_heure.indexOf(d.toLocaleDateString()) !== -1)));
             } else {
-                setMedocSelectionne(medocSelectionneSauvegarde);
+                const d = new Date();
+                // setMedocSelectionne(medocSelectionneSauvegarde);
+                setMedocSelectionne(medocSelectionneSauvegarde.filter(item => (item.date_heure.indexOf(d.toLocaleDateString()) !== -1)));
             }
         }
     }, [non_paye, dateApprov]);
+
+    useEffect(() => {
+        if(alerteStock.length > 0) {
+            callToast();
+        }
+    }, [alerteStock])
 
     const filtrerListe = (e) => {
         const medocFilter = listeSauvegarde.filter(item => (item.designation.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1 || item.id === e.target.value));
@@ -142,10 +152,13 @@ export default function Historique(props) {
 
         if (parseInt(medocSelectionne[0].en_stock) === 0) {
             setAlerteStock('le stock de ' + medocSelectionne[0].designation + ' est épuisé ! Pensez à vous approvisionner');
-            setModalReussi(true);
+            // setModalReussi(true);
+            // callToast();
         } else if (parseInt(medocSelectionne[0].en_stock) <= parseInt(medocSelectionne[0].min_rec)) {
             setAlerteStock('Vous serez bientôt à cour de ' + medocSelectionne[0].designation + ' ! Pensez à vous approvisionner');
-            setModalReussi(true);
+            // setModalReussi(true);
+            // callToast();
+
         }
 
         setStockRestant(medocSelectionne[0].en_stock);
@@ -192,9 +205,10 @@ export default function Historique(props) {
         req1.addEventListener('load', () => {
             if (req1.status >= 200 && req1.status < 400) {
                 const result = JSON.parse(req1.responseText);
-                setMedocSelectionne(result);
+                // setMedocSelectionne(result);
                 setMedocSelectionneSauvegarde(result);
                 setDesignation(medocSelectionne[0].designation);
+                setNonPaye(true);
             } else {
                 console.error(req1.status + " " + req1.statusText);
             }
@@ -255,8 +269,22 @@ export default function Historique(props) {
         setStockPhy(0);
     }
 
+    const callToast = () => {
+        toast.error(`${alerteStock}`, {
+            style: {
+                fontWeight: 'bold',
+                // height: '8vh',
+                fontSize: '18px',
+                backgroundColor: '#ccc',
+                letterSpacing: '1px'
+                // width: '100px'
+            }
+        });
+    }
+
     return (
         <section className="historique">
+            <div><Toaster/></div>
             <Modal
                 isOpen={modalReussi}
                 style={customStyles2}
@@ -288,6 +316,9 @@ export default function Historique(props) {
                     <div style={{textAlign: 'center'}}>
                         <button style={{cursor: 'pointer'}} onClick={() => setStockPhy(parseInt(stockRestant) + ecart)}>Enregistrer</button>
                     </div>
+                    {/* <div onClick={callToast}>
+                        <FaSignOutAlt />
+                    </div> */}
                 </div>
             </Modal>
             <h1>Inventaires des produits</h1>
@@ -315,10 +346,10 @@ export default function Historique(props) {
                     <div className="entete-historique">Désignation: <span style={{fontWeight: '600'}}>{designation}</span></div>
                     <div className="entete-historique">Stock Disponible : <span style={{fontWeight: '600'}}>{stockRestant && stockRestant}</span></div>
                     <div className="entete-historique">Date péremption : <span style={{fontWeight: '600'}}>{datePeremption && datePeremption}</span></div>
-                    <div className="entete-historique">
+                    {/* <div className="entete-historique">
                         <label htmlFor="filtre">Filtrer : </label>
                         <input type="checkbox" id="filtre" checked={non_paye} onChange={(e) => setNonPaye(!non_paye)} />
-                    </div>
+                    </div> */}
                     <div className="entete-historique">
                         <button onClick={() => setModalConfirmation(true)}>Modifier</button>
                     </div>
@@ -326,7 +357,7 @@ export default function Historique(props) {
                         <label htmlFor="">Date : </label>
                         <input type="date" id="" ref={date_filtre} onChange={(e) => setDateApprov(e.target.value)} />
                     </div>
-                    <h1>Mouvements</h1>
+                    <h1>Mouvements du stock</h1>
                     <table>
                         <thead>
                             <tr>
