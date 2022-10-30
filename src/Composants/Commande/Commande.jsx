@@ -379,11 +379,11 @@ export default function Commande(props) {
     }
 
     const idUnique = () => {
-        // Création d'un identifiant unique pour la facture
+        // Création d'un code unique pour le patient
         let d = new Date();
         return d.toLocaleString().substring(15,17) + Math.floor((1 + Math.random()) * 0x100000)
                .toString(16)
-               .substring(1) ;
+               .substring(1);
     }
 
     const enregisterFacture = (id) => {
@@ -557,11 +557,12 @@ export default function Commande(props) {
                             <input ref={refPatient} type="text" name="qteDesire" style={{width: '250px', height: '4vh'}} value={patient} onChange={filtrerPatient} autoComplete='off' />
                             <button style={{cursor: 'pointer', width: '45px', height: '4vh', marginLeft: '5px'}} onClick={ajouterPatient}>OK</button>
                         </div>
+                        <div>code: <strong>{codePatient}</strong></div>
                         {
                             clientSelect.length > 0 && (
                                 <div style={{marginTop: '10px', lineHeight: '25px', display: `${clientSelect[0].nomAssurance === assuranceDefaut ? 'none' : 'block'}`}}>
-                                    <div>assurance <strong>{clientSelect[0].nomAssurance}</strong></div>
-                                    <div>pourcentage <strong>{clientSelect[0].type_assurance}</strong></div>
+                                    <div>assurance: <strong>{clientSelect[0].nomAssurance}</strong></div>
+                                    <div>pourcentage: <strong>{clientSelect[0].type_assurance}</strong></div>
                                 </div>
                             )
                         }
