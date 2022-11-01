@@ -9,13 +9,14 @@ import Comptes from './Composants/Comptes/Comptes';
 import GestionFactures from './Composants/GestionFactures/GestionFactures';
 import Etats from './Composants/Etats/Etats';
 import Stats from './Composants/Stats/Stats.jsx';
+import DetailsVentes from "./Composants/DetailsVentes/DetailsVentes.jsx";
 
 
 function App() {
 
-  const role1 = "admin";
-  const role2 = "major";
-  const role3 = "vendeur";
+  const admin = "admin";
+  const major = "major";
+  const vendeur = "vendeur";
 
   const [onglet, setOnglet] = useState(1);
   const [connecter, setConnecter] = useState(false);
@@ -23,7 +24,7 @@ function App() {
   const [role, setRole] = useState('');
 
   useEffect(() => {
-    if(role === role1) {
+    if(role === admin) {
       setOnglet(6);
     } else {
       setOnglet(1);
@@ -53,20 +54,34 @@ function App() {
     case 7:
       contenu = <Stats nomConnecte={nomConnecte} />
       break;
+    case 8:
+      contenu = <DetailsVentes nomConnecte={nomConnecte} role={role} setConnecter={setConnecter} setOnglet={setOnglet} />
+      break;
+    default:
+      contenu = <Connexion
+      connecter={connecter}
+      setConnecter={setConnecter}
+      nomConnecte={nomConnecte}
+      setNomConnecte={setNomConnecte}
+      role={role}
+      setRole={setRole}
+      />
+      break
   }
 
   if (connecter) {
-    if(role === role1) {
+    if(role === admin) {
       return (
         <main className='app'>
           <Entete nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
           <section className="conteneur-onglets">
-            <div className="onglets-blocs" style={{width: '85%'}}>
+            <div className="onglets-blocs" style={{width: '90%'}}>
               <div className={`tab ${onglet === 6 ? 'active' : ''}`} onClick={ () => {setOnglet(6)}}>Etats</div>
               <div className={`tab ${onglet === 2 ? 'active' : ''}`} onClick={ () => {setOnglet(2)}}>Inventaires</div>
-              <div className={`tab ${onglet === 3 ? 'active' : ''}`} onClick={ () => {setOnglet(3)}}>Gestion des stocks</div>
+              <div className={`tab ${onglet === 3 ? 'active' : ''}`} onClick={ () => {setOnglet(3)}}>Gestion stocks</div>
               <div className={`tab ${onglet === 4 ? 'active' : ''}`} onClick={ () => {setOnglet(4)}}>Comptes</div>
               <div className={`tab ${onglet === 7 ? 'active' : ''}`} onClick={ () => {setOnglet(7)}}>Statistiques</div>
+              <div className={`tab ${onglet === 8 ? 'active' : ''}`} onClick={ () => {setOnglet(8)}}>Infos Ventes</div>
             </div>
             <div className="onglets-contenu">
                 {contenu}
@@ -74,8 +89,8 @@ function App() {
           </section>
         </main>
       );
-    } else if (role === role2) {
-      return (
+    } else if (role === major) {
+      return vendeur(
         <main className='app'>
           <Entete nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
           <section className="conteneur-onglets">
@@ -90,7 +105,7 @@ function App() {
           </section>
         </main>
       );
-    } else if (role === role3) {
+    } else if (role === vendeur) {
       return (
         <main className='app'>
           <Entete nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
