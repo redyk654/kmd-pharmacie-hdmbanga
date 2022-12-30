@@ -63,7 +63,7 @@ export default function Connexion(props) {
             <form action="">
                 <h1 className='title'>Pharmacie</h1>
                 <p className='text-field'>
-                    <label htmlFor="nom" ref={name_field}>Identifiant</label>
+                    <label htmlFor="nom" ref={name_field}>Pseudo</label>
                     <input
                     type="text"
                     name="nom"

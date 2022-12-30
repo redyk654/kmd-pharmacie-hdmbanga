@@ -1,12 +1,23 @@
 .entete {
-    background: #01bd4f;
+    background: #03ca7e;
     color: #f1f1f1;
+    /* border: 1px solid sienna; */
     /* height: 11vh; */
-    display: flex;
+    /* display: flex; */
     /* align-items: center; */
     /* justify-content: center; */
-    position: relative;
+    /* position: relative; */
     transition: .2s;
+}
+
+.entete .deconnection {
+    padding-left: 20px;
+    z-index: -1;
+    /* width: 100%; */
+    display: flex;
+    /* justify-content: ; */
+    /* border: 1px solid #000; */
+    align-items: center;
 }
 
 .entete h3 {
@@ -20,21 +31,22 @@
 }
 
 .entete h1 {
-    width: 100%;
-    padding-left: 80px;
+    /* width: 100%; */
+    /* padding-left: 80px; */
 }
 
 
 .entete button {
-    display: block;
+    /* display: block; */
     color: #012557;
     font-size: 18px;
-    margin-top: 25px;
-    width: 42%;
+    /* margin-top: 25px; */
+    /* width: 42%; */
+    height: 4vh;
     cursor: pointer;
     margin-left: 15px;
 }
 
 .entete .box-entete {
-    width: 50%;
+    width: 100%;
 }

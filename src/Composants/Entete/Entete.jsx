@@ -3,6 +3,7 @@ import './Entete.css';
 import Recette from '../Recette/Recette';
 import ReactToPrint from 'react-to-print';
 import Modal from 'react-modal';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const customStyles1 = {
     content: {
@@ -190,17 +191,19 @@ export default function Entete(props) {
                 </form>
             </Modal>
             <div className="box-entete">
+                <h1 style={{textAlign: 'center', width: '100vw', fontSize: '29px'}}>
+                    © CMA de Bepanda
+                </h1>
                 <h3 onClick={() => setSlide(!slide)}>{props.nomConnecte.toUpperCase()}</h3>
-                <div>
-                    <button onClick={() => {deconnection()}}>Déconnection</button>
-                </div>
-                <div>
-                    <button style={{display: `${slide ? 'inline' : 'none'}`}} onClick={() => {setModalConfirmation(true)}} >Modifier mot de passe</button>
+                <div className='deconnection' style={{display: `${slide ? 'flex' : 'none'}`}}>
+                    <div style={{cursor: 'pointer'}} onClick={deconnection} title="deconnection" >
+                        <FaSignOutAlt size={24} />
+                    </div>
+                    <div>
+                        <button style={{display: `${slide ? 'inline' : 'none'}`}} onClick={() => {setModalConfirmation(true)}} >Modifier</button>
+                    </div>
                 </div>
             </div>
-            <h1 style={{}}>
-                © CMA de Bepanda
-            </h1>
             <div style={{display: 'none'}}>
                 <Recette
                     ref={componentRef}

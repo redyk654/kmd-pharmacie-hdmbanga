@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import AfficherProd from '../AfficherProd/AfficherProd';
 import './ModifierProduit.css';
+
 import Modal from 'react-modal';
+import { useSpring, animated } from 'react-spring';
+
 
 const customStyles1 = {
     content: {
@@ -28,6 +31,8 @@ const customStyles2 = {
 };
 
 export default function ModifierProduit() {
+
+    const props1 = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
 
     const [afficherListe, setAfficherListe] = useState(false);
     const [listeProduit, setListeProduit] = useState([]);
@@ -149,6 +154,7 @@ export default function ModifierProduit() {
     }
 
     return (
+      <animated.div style={props1}>
         <section className="modif-produit">
             <Modal
                 isOpen={modalConfirmation}
@@ -222,5 +228,6 @@ export default function ModifierProduit() {
                 </div>
             </div>
         </section>
+        </animated.div>
     )
 }

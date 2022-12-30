@@ -4,8 +4,12 @@ import { ContextChargement } from '../../Context/Chargement';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ReactToPrint from 'react-to-print';
 import ImprimerEtat from './ImprimerEtat';
+import { useSpring, animated } from 'react-spring';
+
 
 export default function Etats(props) {
+
+    const props1 = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
 
     const componentRef = useRef();
     const admin = "admin";
@@ -206,6 +210,7 @@ export default function Etats(props) {
     }
 
     return (
+      <animated.div style={props1}>
         <section className="etats">
             <h1>Historique des ventes</h1>
             <div className="container-historique">
@@ -246,7 +251,7 @@ export default function Etats(props) {
                                 </select>
                             </p>
                         </div>
-                        <button onClick={rechercherHistorique}>rechercher</button>
+                        <button className='bootstrap-btn' onClick={rechercherHistorique}>rechercher</button>
                         <div>Recette total : <span style={{fontWeight: '700'}}>{recetteTotal ? recetteTotal + ' Fcfa' : '0 Fcfa'}</span></div>
                     </div>
                     <div className='erreur-message'>{messageErreur}</div>
@@ -280,7 +285,7 @@ export default function Etats(props) {
                 </div>
                 <div style={{textAlign: 'center'}}>
                     <ReactToPrint
-                        trigger={() => <button style={{color: '#f1f1f1', height: '5vh', width: '20%', cursor: 'pointer', fontSize: 'large', fontWeight: '600'}}>Imprimer</button>}
+                        trigger={() => <button className='bootstrap-btn' style={{marginBottom: '30px', color: '#f1f1f1', height: '6vh', width: '20%', cursor: 'pointer', fontSize: 'large', fontWeight: '600'}}>Imprimer</button>}
                         content={() => componentRef.current}
                     />
                 </div>
@@ -296,5 +301,6 @@ export default function Etats(props) {
                 />
             </div>
         </section>
+        </animated.div>
     )
 }

@@ -10,6 +10,7 @@ import GestionFactures from './Composants/GestionFactures/GestionFactures';
 import Etats from './Composants/Etats/Etats';
 import Stats from './Composants/Stats/Stats.jsx';
 import DetailsVentes from "./Composants/DetailsVentes/DetailsVentes.jsx";
+import { FaLayerGroup, FaReceipt, FaShoppingBag, FaSignal, FaStore, FaTruck } from 'react-icons/fa';
 
 
 function App() {
@@ -90,14 +91,26 @@ function App() {
         </main>
       );
     } else if (role === major) {
-      return vendeur(
+      return (
         <main className='app'>
           <Entete nomConnecte={nomConnecte} setConnecter={setConnecter} setOnglet={setOnglet} />
           <section className="conteneur-onglets">
-            <div className="onglets-blocs" style={{width: '58%'}}>
-              <div className={`tab ${onglet === 1 ? 'active' : ''}`} onClick={ () => {setOnglet(1)}}>Ventes</div>
-              <div className={`tab ${onglet === 3 ? 'active' : ''}`} onClick={ () => {setOnglet(3)}}>Gestion des stocks</div>
-              <div className={`tab ${onglet === 6 ? 'active' : ''}`} onClick={ () => {setOnglet(6)}}>Etats</div>
+            <div className="onglets-blocs" style={{width: '68%'}}>
+              <div className={`tab ${onglet === 1 ? 'active' : ''}`} onClick={ () => {setOnglet(1)}}>
+                <FaStore size={22} />
+                &nbsp;
+                Ventes
+              </div>
+              <div className={`tab ${onglet === 3 ? 'active' : ''}`} onClick={ () => {setOnglet(3)}}>
+                <FaLayerGroup size={22} />
+                &nbsp;
+                Gestion des stocks
+              </div>
+              <div className={`tab ${onglet === 6 ? 'active' : ''}`} onClick={ () => {setOnglet(6)}}>
+                <FaReceipt size={22} />
+                &nbsp;
+                Etats
+              </div>
             </div>
             <div className="onglets-contenu">
                 {contenu}

@@ -20,7 +20,9 @@
 
 .approvisionner h1 {
     font-size: larger;
-    background: #0e771a;
+    background: #03ca7e;
+    border-radius: 10px 10px 0px 0px;
+
     color: #f1f1f1;
     text-align: center;
 }
@@ -30,7 +32,7 @@
     height: 4vh;
     outline: none;
     border-radius: 5px;
-    color: #0e771a;
+    color: #03ca7e;
     font-size: 17px;
     margin-bottom: 5px;
 }
@@ -43,14 +45,14 @@
 }
 
 .approvisionner ul li {
-    color: #0e771a;
+    color: #03ca7e;
     font-weight: 600;
     width: 100%;
     padding: 0px 5px;
 }
 
 .approvisionner ul li:hover {
-    background-color: #0e771a;
+    background-color: #03ca7e;
     color: #f1f1f1;
     cursor: pointer;
 }
@@ -68,6 +70,7 @@
 .approvisionner .details-approv .box {
     margin: 10px;
     width: 20%;
+    margin: 15px;
 }
 
 @media screen and (max-width: 1120px) {
@@ -77,7 +80,7 @@
 }
 
 .approvisionner .details-approv label {
-    color: #0e771a;
+    color: #03ca7e;
 }
 
 .approvisionner .details-approv input, .approvisionner .details-approv select{
@@ -85,7 +88,7 @@
     height: 4vh;
     font-size: 15px;
     font-weight: 600;
-    color: #0e771a;
+    color: #03ca7e;
 }
 
 .approvisionner .details-approv input {
@@ -107,23 +110,56 @@
 }
 
 .approvisionner  button {
-    color: #fff;
+    /* color: #fff;
     background: #012557;
     font-size: 18px;
     margin-top: 25px;
     width: 60%;
     height: 5vh;
+    cursor: pointer; */
+
+    display: inline-block;
+	font-weight: 500;
+	color: #212529;
+	text-align: center;
+	border: 1px solid transparent;
+	padding: .275rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: .25rem;
+	color: #fff;
+	background-color: #007bff;
     cursor: pointer;
+    margin-top: 15px;
+
+
 }
 
 .approvisionner .details-approv .produits-commandes .valider-btn button {
-    color: #fff;
+    /* color: #fff;
     background: #012557;
     font-size: 18px;
     margin-top: 25px;
     width: 20%;
     height: 5vh;
+    cursor: pointer; */
+
+    display: inline-block;
+	font-weight: 500;
+	color: #212529;
+	text-align: center;
+	border: 1px solid transparent;
+	padding: .275rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: .25rem;
+	color: #fff;
+	background-color: #007bff;
     cursor: pointer;
+    width: 15%;
+    height: 5vh;
+
+
 }
 
 .approvisionner .produits-commandes table {
@@ -133,7 +169,7 @@
 
 .approvisionner .produits-commandes table thead {
     font-weight: 600;
-    background: #0e771a;
+    background: #03ca7e;
     color: #f1f1f1;
 }
 
@@ -142,7 +178,7 @@
 }
 
 .approvisionner .produits-commandes table tbody tr:hover {
-    background-color: #0e771a;
+    background-color: #03ca7e;
     color: #f1f1f1;
     font-weight: 600;
 }

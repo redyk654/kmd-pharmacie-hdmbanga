@@ -28,6 +28,7 @@ const customStyles2 = {
 
 const utilisateur = {
     nom: '',
+    pseudo: '',
     mdp: '',
     confirmation: ''
 }
@@ -46,7 +47,7 @@ export default function Comptes(props) {
     const [reussi, setReussi] = useState('supp');
     const [messageErreur, setMessageErreur] = useState('');
 
-    const { nom, mdp, confirmation } = nvCompte;
+    const { nom, pseudo, mdp, confirmation } = nvCompte;
 
 
     useEffect(() => {
@@ -75,11 +76,6 @@ export default function Comptes(props) {
         return modalContenu ? 
         (
             <Fragment>
-                <h2 style={{color: '#fff'}}>Enregistrer cette recette ?</h2>
-                <div style={{textAlign: 'center'}} className='modal-button'>
-                    <button id='annuler' className='btn-confirmation' style={{width: '20%', height: '5vh', cursor: 'pointer', marginRight: '10px'}} onClick={fermerModalConfirmation}>non</button>
-                    <button id='confirmer' className='btn-confirmation' style={{width: '20%', height: '5vh', cursor: 'pointer'}} onClick={enregisterRecette}>oui</button>
-                </div>
             </Fragment>
         ) :
         (
@@ -89,6 +85,10 @@ export default function Comptes(props) {
                     <p className="input-zone">
                         <label htmlFor="">Nom</label>
                         <input type="text" name="nom" value={nom} onChange={handleChange} autoComplete="off" />
+                    </p>
+                    <p className="input-zone">
+                        <label htmlFor="">Pseudo</label>
+                        <input type="text" name="pseudo" value={pseudo} onChange={handleChange} autoComplete="off" />
                     </p>
                     <p className="input-zone">
                         <label htmlFor="">Mot de passe</label>
@@ -118,7 +118,7 @@ export default function Comptes(props) {
 
     const annulerCompte = () => {
         fermerModalConfirmation();
-        setNvCompte(utilisateur)
+        setNvCompte(utilisateur);
         setMsgErreur('');
     }
 
@@ -126,11 +126,21 @@ export default function Comptes(props) {
         e.preventDefault();
         // Enregistrement du nouveau compte dans la base de données
 
-        if (mdp === confirmation) {
-            setMsgErreur('');
+        if (mdp !== confirmation) {
+            setMsgErreur('Le mot de passe et le mot passe de confirmation doivent être identique');
+        } else if (pseudo.length === 0) {
+            setMsgErreur('le champ pseudo ne doit pas être vide');
+        } else if (pseudo.length > 4) {
+            setMsgErreur('le pseudo doit pas depasser 4 caractères');
+        } else if (nom.length === 0) {
+            setMsgErreur('le champ nom ne doit pas être vide');
+        } else if (mdp.length < 4 || mdp.length > 8) {
+            setMsgErreur('le mot de passe doit être compris entre 4 et 8 caractères');
+        } else {
 
             const data = new FormData();
             data.append('nom', nom);
+            data.append('pseudo', pseudo);
             data.append('mdp', mdp);
             data.append('role', document.querySelector('form').role.value);
 
@@ -150,10 +160,6 @@ export default function Comptes(props) {
             });
 
             req.send(data);
-            
-
-        } else {
-            setMsgErreur('Le mot de passe et le mot passe de confirmation doivent être identique')
         }
     }
 
@@ -165,79 +171,6 @@ export default function Comptes(props) {
         setModalContenu(false);
         setModalConfirmation(true)
 
-    }
-
-    const afficherRecettes = (e) => {
-
-        // Récupération de l'historique des recetttes du vendeur selectionner
-        const req1 = new XMLHttpRequest();
-        req1.open('GET', `http://serveur/backend-cma/gestion_recette.php?nom=${e.target.id}`);
-        req1.addEventListener('load', () => {
-            if(req1.status >= 200 && req1.status < 400) {
-                const result = JSON.parse(req1.responseText);
-                setRecettes(result);
-            }
-        });
-
-        req1.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('Erreur réseau');
-        });
-
-        req1.send();
-
-        // Récupération de la recette en cours du vendeur selectionné
-        const heure = new Date();
-
-        const data = new FormData();
-        data.append('nom', e.target.id);
-
-        const req2 = new XMLHttpRequest();
-        if (heure.getHours() < 10 && heure.getHours() > 6) {
-            req2.open('POST', 'http://serveur/backend-cma/recette_jour.php?service=nuit');
-            req2.send(data);
-        } else if (heure.getHours() > 14 && heure.getHours() < 18) {
-            req2.open('POST', 'http://serveur/backend-cma/recette_jour.php?service=jour');
-            req2.send(data);
-        }
-
-        req2.addEventListener('load', () => {
-            if(req2.status >= 200 && req2.status < 400) {
-                const result = JSON.parse(req2.responseText);
-                setRecetteJour(result);
-                setCompteSelectionne(e.target.id);
-            }
-        });
-
-        req2.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('Erreur réseau');
-        });
-    }
-
-    const enregisterRecette = () => {
-        // Enreistrement de la recette dans la base de données
-        setModalContenu(true);
-        setModalConfirmation(false);
-        const data = new FormData();
-        data.append('nom', compteSelectionne);
-        data.append('montant', recettejour.recette);
-
-        const req = new XMLHttpRequest();
-        req.open('POST', 'http://serveur/backend-cma/gestion_recette.php');
-
-        req.addEventListener('load', () => {
-            if (req.status >= 200 && req.status < 400) {
-                setModalReussi(true);
-            }
-        });
-
-        req.addEventListener("error", function () {
-            // La requête n'a pas réussi à atteindre le serveur
-            setMessageErreur('Erreur réseau');
-        });
-
-        req.send(data);
     }
 
     const afficherCompte = (e) => {
@@ -270,7 +203,8 @@ export default function Comptes(props) {
 
     const fermerModalConfirmation = () => {
         setModalConfirmation(false);
-      }
+        setMsgErreur('');
+    }
   
     const fermerModalReussi = () => {
         setModalReussi(false);

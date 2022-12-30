@@ -18,7 +18,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #0ca01d;
+  background-color: #03ca7e;
   border-radius: 150px;
 }
 
@@ -53,7 +53,7 @@ body {
   cursor: pointer;
   width: 100%;
   padding: 20px;
-  transition: all .3s;
+  transition: all .4s;
   font-weight: 600;
   text-transform: uppercase;
   color: rgb(105, 99, 99);
@@ -79,8 +79,8 @@ body {
 .app .conteneur-onglets .onglets-blocs .tab.active {
   background: #dddbdbb9;
   border: none;
-  color: #1ddb6c;
-  transition: all .3s;
+  color: #03bb75;
+  transition: all .4s;
   /* text-shadow: 1px 1px 1px 5px #0069d9; */
 }
 

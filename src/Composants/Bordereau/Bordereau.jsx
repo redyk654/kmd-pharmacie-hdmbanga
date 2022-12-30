@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import AfficherBordereau from './AfficherBordereau';
 import './Bordereau.css';
 
+import { useSpring, animated } from 'react-spring';
+
 export default function Bordereau(props) {
+
+    const props1 = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
 
     const [listeCommandes, setListeCommandes] = useState([]);
     const [listeCommandesSauvegardes, setListeCommandesSauvegardes] = useState([]);
@@ -79,6 +83,7 @@ export default function Bordereau(props) {
     }
 
     return (
+      <animated.div style={props1}>
         <section className="container-bordereaux">
             <div className="box-liste">
                 <h1>Liste des commandes</h1>
@@ -101,5 +106,6 @@ export default function Bordereau(props) {
                 <AfficherBordereau commandesSelectionne={commandesSelectionne} />
             </div>
         </section>
+        </animated.div>
     )
 }

@@ -22,7 +22,7 @@ const customStyles1 = {
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         background: '#fff',
-        height: '28vh',
+        height: '35vh',
         width: '30vw',
         display: 'flex',
         flexDirection: 'column',
@@ -271,11 +271,11 @@ export default function Commande(props) {
         const medocSelectionne = listeMedoc.filter(item => (item.id == e.target.value));
         setMedoSelect(medocSelectionne);
         if (parseInt(medocSelectionne[0].en_stock) === 0) {
-            setAlerteStock('le stock de ' + medocSelectionne[0].designation + ' est épuisé ! Pensez à vous approvisionner');
-            setModalAlerte(true);
+            var msgAlerteStock = 'le stock de ' + medocSelectionne[0].designation + ' est épuisé ! Pensez à vous approvisionner';
+            toastAlerteStock(msgAlerteStock, '#dd4c47');
         } else if (parseInt(medocSelectionne[0].en_stock) < parseInt(medocSelectionne[0].min_rec)) {
-            setAlerteStock('Vous serez bientôt à cour de ' + medocSelectionne[0].designation + ' ! Pensez à vous approvisionner');
-            setModalAlerte(true);
+            var msgAlerteStock = medocSelectionne[0].designation + ' bientôt en rupture de stock ! Pensez à vous approvisionner';
+            toastAlerteStock(msgAlerteStock, '#FFB900');
         }
     }
 
@@ -413,10 +413,8 @@ export default function Commande(props) {
             majDuCodeFacture();
             setMedoSelect(false);
             setMessageErreur('');
-            // Activation de la fenêtre modale qui indique la réussite de la commmande
-            setModalReussi(true);
-            // Désactivation de la fenêtre modale de confirmation
             setModalConfirmation(false);
+            toastVenteEnregistrer();
             setEncours(false);
             annulerCommande();
         });
@@ -502,7 +500,7 @@ export default function Commande(props) {
                 data2.append('code', item.code);
                 data2.append('designation', item.designation);
                 data2.append('id_prod', item.id);
-                data2.append('id_facture', idFacture);
+                data2.append('id_facture', (idFacture + 'P'));
                 data2.append('categorie', item.categorie);
                 data2.append('genre', item.genre);
                 data2.append('date_peremption', item.date_peremption);
@@ -532,7 +530,7 @@ export default function Commande(props) {
                         });
                         i++;
                         if (i === medocCommandes.length) {
-                            enregisterFacture(idFacture);
+                            enregisterFacture(idFacture + 'P');
                         }
                     }
                 });
@@ -705,16 +703,28 @@ export default function Commande(props) {
         setModalAlerte(false);
     }
 
-    const callToast = () => {
+    const toastVenteEnregistrer = () => {
         toast.success("Vente enregistré !", {
             style: {
                 fontWeight: 'bold',
-                // height: '8vh',
                 fontSize: '18px',
                 backgroundColor: '#fff',
                 letterSpacing: '1px'
-                // width: '100px'
-            }
+            },
+            
+        });
+    }
+
+    const toastAlerteStock = (msg, bg) => {
+        toast.error(msg, {
+            style: {
+                fontWeight: 'bold',
+                fontSize: '18px',
+                color: '#fff',
+                backgroundColor: bg,
+                letterSpacing: '1px'
+            },
+            
         });
     }
 
@@ -751,12 +761,12 @@ export default function Commande(props) {
                     </p>
                     <div style={{textAlign: 'center', marginTop: '12px'}} className=''>
                         {enCours ? 
-                        <Loader type="TailSpin" color="#0e771a" height={50} width={50}/> 
+                        <Loader type="TailSpin" color="#03ca7e" height={50} width={50}/> 
                             : 
-                        <>
+                        <div>
                             <button ref={elt2} className='bootstrap-btn annuler' style={{width: '30%', height: '5vh', cursor: 'pointer', marginRight: '10px', borderRadius: '15px'}} onClick={fermerModalConfirmation}>Annuler</button>
                             <button ref={elt} className="bootstrap-btn valider" style={{width: '30%', height: '5vh', cursor: 'pointer', borderRadius: '15px'}} onClick={validerCommande}>Confirmer</button>
-                        </>
+                        </div>
                         }
                     </div>
                 </Modal>
@@ -770,8 +780,6 @@ export default function Commande(props) {
                     <button style={{width: '20%', height: '5vh', cursor: 'pointer', marginRight: '15px', fontSize: 'large'}} onClick={fermerModalReussi}>Fermer</button>
                 </Modal>
                 <div className="left-side">
-                <FaSignOutAlt onClick={callToast} />
-
                     <p className="search-zone">
                         <input type="text" placeholder="recherchez un produit" className="recherche" onChange={filtrerListe} />
                     </p>
@@ -782,7 +790,7 @@ export default function Commande(props) {
                         <h1>Liste des produits</h1>
                         <ul>
                             {chargement ? <div className="loader"><Loader type="TailSpin" color="#19a754" height={100} width={100}/></div> : listeMedoc.map(item => (
-                                <li value={item.id} key={item.id} onClick={afficherInfos} style={{color: `${parseInt(item.en_stock) < parseInt(item.min_rec) ? 'red' : ''}`}}>{item.designation.toLowerCase()}</li>
+                                <li value={item.id} key={item.id} onClick={afficherInfos} style={{color: `${parseInt(item.en_stock) < parseInt(item.min_rec) || parseInt(item.en_stock) === 0 ? 'red' : ''}`}}>{item.designation.toLowerCase()}</li>
                             ))}
                         </ul>
                     </div>
@@ -883,7 +891,7 @@ export default function Commande(props) {
                                 ref={componentRef}
                                 medocCommandes={medocCommandes}
                                 nomConnecte={props.nomConnecte} 
-                                idFacture={idFacture}
+                                idFacture={(idFacture + 'P')}
                                 prixTotal={qtePrixTotal.prix_total}
                                 aPayer={qtePrixTotal.a_payer}
                                 montantVerse={montantVerse}
@@ -895,7 +903,7 @@ export default function Commande(props) {
                     </div>
                 </div>
             </section>
-        </animated.div>   
+        </animated.div>
         
     )
 }

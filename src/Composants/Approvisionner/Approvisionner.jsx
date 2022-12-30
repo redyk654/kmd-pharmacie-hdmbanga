@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Approvisionner.css';
 import Modal from 'react-modal';
 
+import { useSpring, animated } from 'react-spring';
 
 const medocs = {
     code: '',
@@ -44,6 +45,7 @@ const customStyles2 = {
 
 export default function Approvisionner(props) {
 
+    const props1 = useSpring({ to: { opacity: 1 }, from: { opacity: 0 } });
 
     const [afficherListe, setAfficherListe] = useState(false)
     const [listeProduit, setListeProduit] = useState([]);
@@ -270,6 +272,7 @@ export default function Approvisionner(props) {
     }
 
     return (
+      <animated.div style={props1}>
         <section className="approvisionner">
             <Modal
                 isOpen={modalConfirmation}
@@ -423,5 +426,6 @@ export default function Approvisionner(props) {
                 </div>
             </div>
         </section>
+        </animated.div>
     )
 }

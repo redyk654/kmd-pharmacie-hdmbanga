@@ -72,8 +72,6 @@ export default function DetailsVentes(props) {
             req.addEventListener('load', () => {
                 setMessageErreur('');
                 const result = JSON.parse(req.responseText);
-                // console.log(req.responseText);
-                console.log(result);
 
                 setHistoriqueSauvegarde(result);
                 

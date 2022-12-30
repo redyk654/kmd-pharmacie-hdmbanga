@@ -28,7 +28,7 @@ export default function DetailsMedoc(props) {
                             </div>
                             <div className="detail-item">
                                 <label htmlFor="">Stock Disponible</label>
-                                <input style={{color: `${parseInt(item.en_stock) < parseInt(item.min_rec) ? 'red' : ''}`}} type="text" value={item.en_stock} />
+                                <input style={{color: `${parseInt(item.en_stock) < parseInt(item.min_rec) || parseInt(item.en_stock) === 0 ? 'red' : ''}`}} type="text" value={item.en_stock} />
                             </div>
                         </div>
                         <div className="box">

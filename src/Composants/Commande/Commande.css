@@ -9,8 +9,8 @@
 }
 
 .commande .right-side h1 {
-    background: #01bd4f;
-    color: #f1f1f1;
+    background: #03ca7e;
+    color: #fff;
     text-align: center;
     margin: 0px 5px;
     border-radius: 10px 10px 0px 0px;
@@ -18,8 +18,8 @@
 }
 
 .commande .left-side .liste-medoc h1 {
-    background-color: #01bd4f;
-    color: #f1f1f1;
+    background-color: #03ca7e;
+    color: #fff;
     width: 100%;
     border-radius: 10px 10px 0px 0px;
     padding: 4px;
@@ -34,7 +34,7 @@
   height: 5vh;
   outline: none;
   border-radius: 5px;
-  color: #0e771a;
+  color: #1beabd;
   font-size: 17px;
 }
 
@@ -65,13 +65,13 @@
 }
 
 .commande .left-side .liste-medoc ul li {
-    color: #19a754;
+    color: #04a567;
     font-weight: 600;
     width: 100%;
 }
 
 .commande .left-side .liste-medoc ul li:hover {
-    background-color: #01bd4fd2;
+    background-color: rgba(4, 150, 94, 0.795);
     color: #f1f1f1;
     cursor: pointer;
 }
@@ -86,7 +86,7 @@
 
 .commande .right-side .infos-medoc {
     display: flex;
-    border: 1px solid #01bd4f;
+    border: 1px solid #03ca7e;
     margin: 0px 5px;
 }
 
@@ -95,7 +95,7 @@
 }
 
 .commande .right-side .infos-medoc label {
-    color: #01bd4f;
+    color: #03ca7e;
 }
 
 
@@ -114,7 +114,7 @@
 
 .commande .right-side .infos-medoc .box .item p:last-child {
     font-weight: 700;
-    color: #0c5f16;
+    color: #03ca7e;
 }
 
 .commande .right-side input{
@@ -123,13 +123,13 @@
     height: 4vh;
     font-size: 15px;
     font-weight: 600;
-    color: #0e771a;
+    color: #03ca7e;
     margin-right: 5px;
 }
 
 .commande .right-side h1 {
     margin-top: 5px;
-    background-color: #01bd4f;
+    background-color: #03ca7e;
 }
 
 .commande .right-side .details-commande {
@@ -147,7 +147,7 @@
 }
 
 .commande .right-side .details-commande table tbody {
-    color: #012557;
+    color: #027e4e;
 }
 
 .commande .right-side .details-commande table thead tr td:nth-child(2),
@@ -195,13 +195,15 @@
 	color: #212529;
 	text-align: center;
 	border: 1px solid transparent;
-	padding: .375rem .75rem;
+	padding: .275rem .75rem;
 	font-size: 1rem;
 	line-height: 1.5;
 	border-radius: .25rem;
 	color: #fff;
 	background-color: #007bff;
     cursor: pointer;
+    width: 13%;
+
 }
 
 .bootstrap-btn.valider:hover {
@@ -213,12 +215,7 @@
 }
 
 .bootstrap-btn.annuler {
-    /* margin-right: s0px; */
     background-color: #ec4641;
-}
-
-.bootstrap-btn.valider{
-    width: 7vw;
 }
 
 .commande .right-side .box .detail-item {
@@ -230,7 +227,6 @@
 
 .commande .right-side .box .detail-item input[type=text]:focus {
     box-shadow: inset 0 0 0 3px #fff,
-			/* 0 0 0 4px #fff, */
 			1px -1px 4px #1beabd,
 			-1px 1px 4px #0cd3a8;
     border: 1px solid #1beabd;
